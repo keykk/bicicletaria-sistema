@@ -5,7 +5,7 @@
                 <i class="bi bi-file-plus"></i>
                 Novo Orçamento
             </h1>
-            <a href="/orcamento" class="btn btn-outline-secondary">
+            <a href="<?php echo BASE_URL; ?>/orcamento" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i>
                 Voltar
             </a>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<form method="POST" action="/orcamento/salvar" id="orcamento-form">
+<form method="POST" action="<?php echo BASE_URL; ?>/orcamento/salvar" id="orcamento-form">
     <div class="row">
         <!-- Dados do cliente -->
         <div class="col-lg-4 mb-4">
@@ -134,7 +134,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <a href="/orcamento" class="btn btn-outline-secondary">
+                        <a href="<?php echo BASE_URL; ?>/orcamento" class="btn btn-outline-secondary">
                             <i class="bi bi-x-circle"></i>
                             Cancelar
                         </a>

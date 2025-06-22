@@ -9,7 +9,8 @@ class BackupSystem {
     private $backupDir;
     
     public function __construct() {
-        $this->db = Database::getInstance()->getConnection();
+        // $this->db = Database::getConnection();
+        // Removido porque Database::getConnection() não existe ou não é necessário para backup via mysqldump
         $this->backupDir = __DIR__ . '/../backups/';
         
         // Criar diretório de backup se não existir

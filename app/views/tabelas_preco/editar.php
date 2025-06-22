@@ -6,11 +6,11 @@
                 Editar: <?= htmlspecialchars($tabela['nome']) ?>
             </h1>
             <div class="btn-group" role="group">
-                <a href="/tabela-preco/copiar/<?= $tabela['id'] ?>" class="btn btn-outline-info">
+                <a href="<?php echo BASE_URL; ?>/tabelapreco/copiar/<?= $tabela['id'] ?>" class="btn btn-outline-info">
                     <i class="bi bi-files"></i>
                     Copiar Tabela
                 </a>
-                <a href="/tabela-preco" class="btn btn-outline-secondary">
+                <a href="<?php echo BASE_URL; ?>/tabelapreco" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left"></i>
                     Voltar
                 </a>
@@ -30,7 +30,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="/tabela-preco/adicionar-produto/<?= $tabela['id'] ?>">
+                <form method="POST" action="<?php echo BASE_URL; ?>/tabelapreco/adicionarproduto/<?= $tabela['id'] ?>">
                     <div class="mb-3">
                         <label for="id_produto" class="form-label">Produto *</label>
                         <select class="form-select" id="id_produto" name="id_produto" required>
@@ -74,7 +74,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="/tabela-preco/atualizar-precos-em-massa/<?= $tabela['id'] ?>">
+                <form method="POST" action="<?php echo BASE_URL; ?>/tabelapreco/atualizarPrecosEmMassa/<?= $tabela['id'] ?>">
                     <div class="mb-3">
                         <label for="percentual" class="form-label">Percentual de Ajuste</label>
                         <div class="input-group">
@@ -184,7 +184,7 @@
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <a href="/tabela-preco/remover-produto/<?= $tabela['id'] ?>/<?= $item['id_produto'] ?>" 
+                                            <a href="<?php echo BASE_URL; ?>/tabelapreco/removerproduto/<?= $tabela['id'] ?>/<?= $item['id_produto'] ?>" 
                                                class="btn btn-outline-danger btn-sm btn-delete"
                                                data-item="este produto da tabela"
                                                data-bs-toggle="tooltip" title="Remover">

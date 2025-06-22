@@ -6,19 +6,19 @@
                 Orçamento #<?= $orcamento['id'] ?>
             </h1>
             <div class="btn-group" role="group">
-                <a href="/orcamento/imprimir/<?= $orcamento['id'] ?>" 
+                <a href="<?php echo BASE_URL; ?>/orcamento/imprimir/<?= $orcamento['id'] ?>" 
                    class="btn btn-success" target="_blank">
                     <i class="bi bi-printer"></i>
                     Imprimir
                 </a>
                 <?php if (!empty($orcamento['email'])): ?>
-                    <a href="/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
+                    <a href="<?php echo BASE_URL; ?>/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
                        class="btn btn-info">
                         <i class="bi bi-envelope"></i>
                         Enviar Email
                     </a>
                 <?php endif; ?>
-                <a href="/orcamento" class="btn btn-outline-secondary">
+                <a href="<?php echo BASE_URL; ?>/orcamento" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left"></i>
                     Voltar
                 </a>
@@ -178,7 +178,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 mb-2">
-                        <a href="/orcamento/imprimir/<?= $orcamento['id'] ?>" 
+                        <a href="<?php echo BASE_URL; ?>/orcamento/imprimir/<?= $orcamento['id'] ?>" 
                            class="btn btn-outline-success w-100" target="_blank">
                             <i class="bi bi-printer"></i>
                             Imprimir Orçamento
@@ -186,7 +186,7 @@
                     </div>
                     <?php if (!empty($orcamento['email'])): ?>
                     <div class="col-md-3 mb-2">
-                        <a href="/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
+                        <a href="<?php echo BASE_URL; ?>/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
                            class="btn btn-outline-info w-100">
                             <i class="bi bi-envelope"></i>
                             Enviar por Email
@@ -194,13 +194,13 @@
                     </div>
                     <?php endif; ?>
                     <div class="col-md-3 mb-2">
-                        <a href="/orcamento/novo" class="btn btn-outline-primary w-100">
+                        <a href="<?php echo BASE_URL; ?>/orcamento/novo" class="btn btn-outline-primary w-100">
                             <i class="bi bi-plus-circle"></i>
                             Novo Orçamento
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/orcamento/excluir/<?= $orcamento['id'] ?>" 
+                        <a href="<?php echo BASE_URL; ?>/orcamento/excluir/<?= $orcamento['id'] ?>" 
                            class="btn btn-outline-danger w-100 btn-delete"
                            data-item="este orçamento">
                             <i class="bi bi-trash"></i>

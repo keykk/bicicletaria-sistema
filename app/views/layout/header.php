@@ -58,8 +58,8 @@
                             <i class="bi bi-currency-dollar"></i> Preços
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/tabela-preco">Tabelas de Preço</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/tabela-preco/nova">Nova Tabela</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/tabelapreco">Tabelas de Preço</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/tabelapreco/nova">Nova Tabela</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

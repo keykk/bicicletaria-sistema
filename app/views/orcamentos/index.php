@@ -5,7 +5,7 @@
                 <i class="bi bi-file-text"></i>
                 Orçamentos
             </h1>
-            <a href="/orcamento/novo" class="btn btn-primary">
+            <a href="<?php echo BASE_URL; ?>/orcamento/novo" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i>
                 Novo Orçamento
             </a>
@@ -26,7 +26,7 @@
     <div class="col-md-3">
         <div class="card text-center border-start-success">
             <div class="card-body">
-                <h5 class="card-title text-success">R$ <?= number_format($estatisticas['valor_total'], 2, ',', '.') ?></h5>
+                <h5 class="card-title text-success">R$ <?= number_format($estatisticas['valor_total'] ?? 0, 2, ',', '.') ?></h5>
                 <p class="card-text">Valor Total</p>
             </div>
         </div>
@@ -34,7 +34,7 @@
     <div class="col-md-3">
         <div class="card text-center border-start-info">
             <div class="card-body">
-                <h5 class="card-title text-info">R$ <?= number_format($estatisticas['valor_medio'], 2, ',', '.') ?></h5>
+                <h5 class="card-title text-info">R$ <?= number_format($estatisticas['valor_medio'] ?? 0, 2, ',', '.') ?></h5>
                 <p class="card-text">Valor Médio</p>
             </div>
         </div>
@@ -42,7 +42,7 @@
     <div class="col-md-3">
         <div class="card text-center border-start-warning">
             <div class="card-body">
-                <h5 class="card-title text-warning">R$ <?= number_format($estatisticas['maior_valor'], 2, ',', '.') ?></h5>
+                <h5 class="card-title text-warning">R$ <?= number_format($estatisticas['maior_valor'] ?? 0, 2, ',', '.') ?></h5>
                 <p class="card-text">Maior Valor</p>
             </div>
         </div>
@@ -94,7 +94,7 @@
                         <i class="bi bi-file-text display-1 text-muted"></i>
                         <h5 class="mt-3">Nenhum orçamento encontrado</h5>
                         <p class="text-muted">Crie seu primeiro orçamento para começar.</p>
-                        <a href="/orcamento/novo" class="btn btn-primary">
+                        <a href="<?php echo BASE_URL; ?>/orcamento/novo" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i>
                             Criar Primeiro Orçamento
                         </a>
@@ -156,25 +156,25 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="/orcamento/visualizar/<?= $orcamento['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/orcamento/visualizar/<?= $orcamento['id'] ?>" 
                                                    class="btn btn-outline-primary" 
                                                    data-bs-toggle="tooltip" title="Visualizar">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="/orcamento/imprimir/<?= $orcamento['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/orcamento/imprimir/<?= $orcamento['id'] ?>" 
                                                    class="btn btn-outline-success" 
                                                    data-bs-toggle="tooltip" title="Imprimir"
                                                    target="_blank">
                                                     <i class="bi bi-printer"></i>
                                                 </a>
                                                 <?php if (!empty($orcamento['email'])): ?>
-                                                    <a href="/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
+                                                    <a href="<?php echo BASE_URL; ?>/orcamento/enviar-email/<?= $orcamento['id'] ?>" 
                                                        class="btn btn-outline-info" 
                                                        data-bs-toggle="tooltip" title="Enviar por Email">
                                                         <i class="bi bi-envelope"></i>
                                                     </a>
                                                 <?php endif; ?>
-                                                <a href="/orcamento/excluir/<?= $orcamento['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/orcamento/excluir/<?= $orcamento['id'] ?>" 
                                                    class="btn btn-outline-danger btn-delete" 
                                                    data-item="o orçamento #<?= $orcamento['id'] ?> de <?= htmlspecialchars($orcamento['cliente']) ?>"
                                                    data-bs-toggle="tooltip" title="Excluir">

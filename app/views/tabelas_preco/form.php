@@ -5,7 +5,7 @@
                 <i class="bi bi-currency-dollar"></i>
                 Nova Tabela de Preço
             </h1>
-            <a href="/tabela-preco" class="btn btn-outline-secondary">
+            <a href="<?php echo BASE_URL; ?>/tabelapreco" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i>
                 Voltar
             </a>
@@ -23,7 +23,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form method="POST" action="/tabela-preco/salvar">
+                <form method="POST" action="<?php echo BASE_URL; ?>/tabelapreco/salvar">
                     <div class="mb-4">
                         <label for="nome" class="form-label">Nome da Tabela *</label>
                         <input type="text" class="form-control" id="nome" name="nome" required
@@ -35,7 +35,7 @@
                     </div>
                     
                     <div class="d-flex justify-content-between pt-3 border-top">
-                        <a href="/tabela-preco" class="btn btn-outline-secondary">
+                        <a href="<?php echo BASE_URL; ?>/tabelapreco" class="btn btn-outline-secondary">
                             <i class="bi bi-x-circle"></i>
                             Cancelar
                         </a>

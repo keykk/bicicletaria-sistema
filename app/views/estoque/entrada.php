@@ -30,7 +30,7 @@
                     </div>
                 <?php endif; ?>
                 
-                <form method="POST" action="<?php echo BASE_URL; ?>/estoque/processar-entrada">
+                <form method="POST" action="<?php echo BASE_URL; ?>/estoque/processarEntrada">
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="id_produto" class="form-label">Produto *</label>

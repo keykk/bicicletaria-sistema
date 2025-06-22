@@ -57,7 +57,7 @@ class TabelaPrecoController extends BaseController {
         $this->requireLogin();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
         
         $data = [
@@ -68,16 +68,16 @@ class TabelaPrecoController extends BaseController {
         
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            $this->redirect('/tabela-preco/nova');
+            $this->redirect('/tabelapreco/nova');
         }
         
         $idTabela = $this->tabelaPrecoModel->insert($data);
         
         if ($idTabela) {
-            $this->redirect("/tabela-preco/editar/$idTabela");
+            $this->redirect("/tabelapreco/editar/$idTabela");
         } else {
             $_SESSION['errors'] = ['Erro ao salvar tabela de preço'];
-            $this->redirect('/tabela-preco/nova');
+            $this->redirect('/tabelapreco/nova');
         }
     }
     
@@ -90,7 +90,7 @@ class TabelaPrecoController extends BaseController {
         $tabela = $this->tabelaPrecoModel->findWithItens($id);
         
         if (!$tabela) {
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
         
         $produtos = $this->produtoModel->findAll();
@@ -115,7 +115,7 @@ class TabelaPrecoController extends BaseController {
         $this->requireLogin();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect("/tabela-preco/editar/$idTabela");
+            $this->redirect("/tabelapreco/editar/$idTabela");
         }
         
         $idProduto = $_POST['id_produto'] ?? '';
@@ -123,7 +123,7 @@ class TabelaPrecoController extends BaseController {
         
         if (empty($idProduto) || empty($preco) || !is_numeric($preco) || $preco <= 0) {
             $_SESSION['errors'] = ['Produto e preço são obrigatórios'];
-            $this->redirect("/tabela-preco/editar/$idTabela");
+            $this->redirect("/tabelapreco/editar/$idTabela");
         }
         
         if ($this->itemTabelaPrecoModel->updateOrInsertPreco($idTabela, $idProduto, $preco)) {
@@ -132,7 +132,7 @@ class TabelaPrecoController extends BaseController {
             $_SESSION['errors'] = ['Erro ao adicionar produto à tabela'];
         }
         
-        $this->redirect("/tabela-preco/editar/$idTabela");
+        $this->redirect("/tabelapreco/editar/$idTabela");
     }
     
     /**
@@ -147,7 +147,7 @@ class TabelaPrecoController extends BaseController {
             $_SESSION['errors'] = ['Erro ao remover produto da tabela'];
         }
         
-        $this->redirect("/tabela-preco/editar/$idTabela");
+        $this->redirect("/tabelapreco/editar/$idTabela");
     }
     
     /**
@@ -159,17 +159,17 @@ class TabelaPrecoController extends BaseController {
         $tabela = $this->tabelaPrecoModel->findById($id);
         
         if (!$tabela) {
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
         
         $novoNome = $tabela['nome'] . ' - Cópia';
         $novaTabela = $this->tabelaPrecoModel->copiarTabela($id, $novoNome);
         
         if ($novaTabela) {
-            $this->redirect("/tabela-preco/editar/$novaTabela");
+            $this->redirect("/tabelapreco/editar/$novaTabela");
         } else {
             $_SESSION['errors'] = ['Erro ao copiar tabela de preço'];
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
     }
     
@@ -180,14 +180,14 @@ class TabelaPrecoController extends BaseController {
         $this->requireLogin();
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect("/tabela-preco/editar/$id");
+            $this->redirect("/tabelapreco/editar/$id");
         }
         
         $percentual = $_POST['percentual'] ?? '';
         
         if (empty($percentual) || !is_numeric($percentual)) {
             $_SESSION['errors'] = ['Percentual é obrigatório'];
-            $this->redirect("/tabela-preco/editar/$id");
+            $this->redirect("/tabelapreco/editar/$id");
         }
         
         if ($this->tabelaPrecoModel->atualizarPrecosEmMassa($id, $percentual)) {
@@ -196,7 +196,7 @@ class TabelaPrecoController extends BaseController {
             $_SESSION['errors'] = ['Erro ao atualizar preços'];
         }
         
-        $this->redirect("/tabela-preco/editar/$id");
+        $this->redirect("/tabelapreco/editar/$id");
     }
     
     /**
@@ -208,14 +208,14 @@ class TabelaPrecoController extends BaseController {
         $tabela = $this->tabelaPrecoModel->findById($id);
         
         if (!$tabela) {
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
         
         if ($this->tabelaPrecoModel->delete($id)) {
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         } else {
             $_SESSION['errors'] = ['Erro ao excluir tabela de preço'];
-            $this->redirect('/tabela-preco');
+            $this->redirect('/tabelapreco');
         }
     }
     

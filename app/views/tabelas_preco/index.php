@@ -5,7 +5,7 @@
                 <i class="bi bi-currency-dollar"></i>
                 Tabelas de Preço
             </h1>
-            <a href="/tabela-preco/nova" class="btn btn-primary">
+            <a href="<?php echo BASE_URL; ?>/tabelapreco/nova" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i>
                 Nova Tabela
             </a>
@@ -29,7 +29,7 @@
                         <i class="bi bi-currency-dollar display-1 text-muted"></i>
                         <h5 class="mt-3">Nenhuma tabela de preço cadastrada</h5>
                         <p class="text-muted">Crie sua primeira tabela de preço para gerenciar diferentes valores.</p>
-                        <a href="/tabela-preco/nova" class="btn btn-primary">
+                        <a href="<?php echo BASE_URL; ?>/tabelapreco/nova" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i>
                             Criar Primeira Tabela
                         </a>
@@ -65,17 +65,17 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="/tabela-preco/editar/<?= $tabela['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/tabelapreco/editar/<?= $tabela['id'] ?>" 
                                                    class="btn btn-outline-primary" 
                                                    data-bs-toggle="tooltip" title="Editar">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="/tabela-preco/copiar/<?= $tabela['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/tabelapreco/copiar/<?= $tabela['id'] ?>" 
                                                    class="btn btn-outline-info" 
                                                    data-bs-toggle="tooltip" title="Copiar">
                                                     <i class="bi bi-files"></i>
                                                 </a>
-                                                <a href="/tabela-preco/excluir/<?= $tabela['id'] ?>" 
+                                                <a href="<?php echo BASE_URL; ?>/tabelapreco/excluir/<?= $tabela['id'] ?>" 
                                                    class="btn btn-outline-danger btn-delete" 
                                                    data-item="a tabela '<?= htmlspecialchars($tabela['nome']) ?>'"
                                                    data-bs-toggle="tooltip" title="Excluir">
