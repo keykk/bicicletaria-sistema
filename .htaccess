@@ -1,0 +1,30 @@
+# .htaccess para roteamento de URLs amigáveis
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Definir diretório base se o site estiver em um subdiretório
+    # RewriteBase /omnia_project/
+    
+    # Redirecionar para HTTPS (descomente se necessário)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Não aplicar regras a arquivos e diretórios existentes
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Redirecionar todas as requisições para index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Configurações adicionais
+<IfModule mod_headers.c>
+    # Permitir acesso de qualquer origem (CORS)
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+# Configurações de PHP (descomente se necessário)
+# php_value upload_max_filesize 10M
+# php_value post_max_size 10M
+# php_value max_execution_time 300
+# php_value max_input_time 300
