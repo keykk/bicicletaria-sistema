@@ -140,7 +140,7 @@ var BikeSystem = {
 // Orçamento - Funções específicas
 var Orcamento = {
     // Adicionar item ao orçamento
-    adicionarItem: function() {
+    adicionarItem: function(path = '') {
         var template = $('#item-template').html();
         var index = $('.orcamento-item').length;
         
@@ -148,7 +148,7 @@ var Orcamento = {
         $('#itens-orcamento').append(template);
         
         // Inicializar eventos no novo item
-        this.initItemEvents($('.orcamento-item').last());
+        this.initItemEvents($('.orcamento-item').last(), path);
     },
     
     // Remover item do orçamento
@@ -182,12 +182,12 @@ var Orcamento = {
     },
     
     // Buscar preço do produto
-    buscarPrecoProduto: function(select) {
+    buscarPrecoProduto: function(select, path = '') {
         var produtoId = $(select).val();
         var item = $(select).closest('.orcamento-item');
         
         if (produtoId) {
-            $.get('/orcamento/api-preco-produto/' + produtoId, function(response) {
+            $.get(path+'/orcamento/apiPrecoProduto/' + produtoId, function(response) {
                 if (response.preco) {
                     item.find('.preco').val(response.preco);
                     Orcamento.calcularSubtotal(item);
@@ -197,11 +197,10 @@ var Orcamento = {
     },
     
     // Inicializar eventos do item
-    initItemEvents: function(item) {
+    initItemEvents: function(item, path = '') {
         var self = this;
-        
         item.find('.produto-select').on('change', function() {
-            self.buscarPrecoProduto(this);
+            self.buscarPrecoProduto(this, path);
         });
         
         item.find('.quantidade, .preco').on('input', function() {

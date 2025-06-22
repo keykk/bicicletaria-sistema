@@ -203,7 +203,7 @@
 </div>
 
 <script>
-$(document).ready(function() {
+checkJQuery(function($) { 
     // Mostrar preço original quando selecionar produto
     $('#id_produto').on('change', function() {
         var selectedOption = $(this).find('option:selected');

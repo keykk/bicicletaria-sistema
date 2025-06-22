@@ -17,31 +17,33 @@ class TabelaPreco extends BaseModel {
      */
     public function criarTabela($dadosTabela, $itens = []) {
         try {
-            $this->db->beginTransaction();
+            $itemTabelaModel = new ItemTabelaPreco();
+            $itemTabelaModel->db->beginTransaction();
             
             // Inserir a tabela de preço
             $idTabela = $this->insert($dadosTabela);
             
             if (!$idTabela) {
-                $this->db->rollBack();
+                $itemTabelaModel->db->rollBack();
                 return false;
             }
             
             // Inserir os itens da tabela de preço
             if (!empty($itens)) {
-                $itemTabelaModel = new ItemTabelaPreco();
+               
                 foreach ($itens as $item) {
                     $item['id_tabela'] = $idTabela;
                     if (!$itemTabelaModel->insert($item)) {
-                        $this->db->rollBack();
+                        $itemTabelaModel->db->rollBack();
                         return false;
                     }
                 }
             }
             
-            $this->db->commit();
+            $itemTabelaModel->db->commit();
             return $idTabela;
         } catch (Exception $e) {
+            gravarLog("Erro ao criar tabela de preço: " . $e->getMessage());
             $this->db->rollBack();
             return false;
         }
@@ -98,8 +100,14 @@ class TabelaPreco extends BaseModel {
             $dadosNovaTabela = [
                 'nome' => $novoNome
             ];
+            $itens = $tabelaOrigem['itens'];
             
-            return $this->criarTabela($dadosNovaTabela, $tabelaOrigem['itens']);
+            $itens = array_map(function($item) {
+                unset($item['produto_nome'], $item['categoria'], $item['unidade_medida'], $item['id']);
+                return $item;
+            }, $itens);
+
+            return $this->criarTabela($dadosNovaTabela, $itens);
         } catch (Exception $e) {
             return false;
         }

@@ -144,7 +144,7 @@
 </div>
 
 <script>
-$(document).ready(function() {
+checkJQuery(function($) { 
     // Mostrar/esconder campos específicos para bicicletas
     function toggleBikeFields() {
         var categoria = $('#categoria').val();
@@ -168,6 +168,7 @@ $(document).ready(function() {
             $(this).val(0);
         }
     });
+    
 });
 </script>
 

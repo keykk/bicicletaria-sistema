@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Sistema de Gestão - Bicicletaria' ?></title>
-    
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo PUBLIC_URL; ?>/bootstrap-5.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="<?php echo PUBLIC_URL; ?>/bootstrap-5.3.7-dist/icons-1.13.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?php echo PUBLIC_URL; ?>/css/style.css" rel="stylesheet">
+
+    <script>
+
+        function checkJQuery(callback) {
+            if (window.jQuery) {
+                callback(jQuery);
+            } else {
+                var script = document.createElement('script');
+                script.src = "<?php echo PUBLIC_URL; ?>/js/jquery-3.7.1.js";
+                script.onload = function() {
+                    callback(jQuery);
+                };
+                document.head.appendChild(script);
+            }
+        }
+    </script>
 </head>
 <body>
     <?php if (isset($_SESSION['user_id'])): ?>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/dashboard">
+            <a class="navbar-brand" href="<?php echo BASE_URL; ?>/dashboard">
                 <i class="bi bi-bicycle"></i>
                 BikeSystem
             </a>

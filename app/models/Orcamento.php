@@ -17,27 +17,32 @@ class Orcamento extends BaseModel {
      */
     public function criarOrcamento($dadosOrcamento, $itens) {
         try {
-            $this->db->beginTransaction();
+            $itemOrcamentoModel = new ItemOrcamento();
+            $itemOrcamentoModel->db->beginTransaction();
+            //$this->db->beginTransaction();
             
             // Inserir o orçamento
             $idOrcamento = $this->insert($dadosOrcamento);
             
             if (!$idOrcamento) {
-                $this->db->rollBack();
+                $itemOrcamentoModel->db->rollBack();
                 return false;
             }
-            
             // Inserir os itens do orçamento
-            $itemOrcamentoModel = new ItemOrcamento();
+            
             foreach ($itens as $item) {
                 $item['id_orcamento'] = $idOrcamento;
-                if (!$itemOrcamentoModel->insert($item)) {
-                    $this->db->rollBack();
+                $it = $itemOrcamentoModel->insert($item);
+                if (!$it) {
+                    //$this->db->rollBack();
+                    $itemOrcamentoModel->db->rollBack();
                     return false;
                 }
+
             }
             
-            $this->db->commit();
+            //$this->db->commit();
+            $itemOrcamentoModel->db->commit();
             return $idOrcamento;
         } catch (Exception $e) {
             $this->db->rollBack();

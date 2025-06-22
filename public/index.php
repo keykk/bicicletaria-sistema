@@ -5,6 +5,7 @@
  */
 
 // Configurações iniciais
+date_default_timezone_set('America/Sao_Paulo');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -20,8 +21,25 @@ define('ROOT_PATH', dirname(__FILE__));
 define('APP_PATH', APP_ROOT . '/app');
 define('CONFIG_PATH', APP_ROOT . '/config');
 define('PUBLIC_PATH', ROOT_PATH . '/public');
+define('ERROR_LOG_PATH', APP_ROOT . '/logs');
 
-
+function gravarLog($mensagem, $arquivo = 'application.log') {
+    $data = date('Y-m-d');
+    $arquivo = $data . '_' . $arquivo;
+    $hora = date('H:i:s');
+    $mensagemFormatada = "[$hora] $mensagem" . PHP_EOL;
+    
+    // Define o diretório de logs (ajuste conforme necessário)
+    $diretorioLogs = ERROR_LOG_PATH . '/';
+    
+    // Cria o diretório se não existir
+    if (!file_exists($diretorioLogs)) {
+        mkdir($diretorioLogs, 0777, true);
+    }
+    
+    // Grava no arquivo de log
+    file_put_contents($diretorioLogs . $arquivo, $mensagemFormatada, FILE_APPEND);
+}
 
 // Autoload das classes
 spl_autoload_register(function ($class) {

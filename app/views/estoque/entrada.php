@@ -112,23 +112,9 @@
     </div>
 </div>
 <script>
-// Verifica se jQuery está disponível
-function checkJQuery(callback) {
-    if (window.jQuery) {
-        callback(jQuery);
-    } else {
-        var script = document.createElement('script');
-        script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
-        script.onload = function() {
-            callback(jQuery);
-        };
-        document.head.appendChild(script);
-    }
-}
 
 // Usa a função para executar seu código
 checkJQuery(function($) {
-    $(document).ready(function() {
         $('#id_produto').on('change', function() {
             var produtoId = $(this).val();
             var selectedOption = $(this).find('option:selected');
@@ -177,6 +163,5 @@ checkJQuery(function($) {
                 $(this).val(1);
             }
         });
-    });
 });
 </script>

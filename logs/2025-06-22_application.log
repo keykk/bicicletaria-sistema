@@ -1,0 +1,45 @@
+[20:45:36] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[20:45:36] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[20:45:36] Campos: {"id_produto":"3","quantidade":"1","preco":"80.00","subtotal":80,"id_orcamento":"9"}
+[20:52:09] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[20:52:09] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[20:52:09] Campos: {"id_produto":"2","quantidade":"1","preco":"150.00","subtotal":150,"id_orcamento":"10"}
+[21:08:27] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[21:08:27] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[21:08:27] Campos: {"id_produto":"3","quantidade":"1","preco":"80.00","subtotal":80,"id_orcamento":"12"}
+[21:10:47] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[21:10:47] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[21:10:47] Campos: {"id_produto":"1","quantidade":"1","preco":"1500.00","subtotal":1500,"id_orcamento":"13"}
+[21:21:07] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[21:21:07] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[21:21:07] Campos: {"id_produto":"2","quantidade":"1","preco":"150.00","subtotal":150,"id_orcamento":"14"}
+[21:32:05] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[21:32:05] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[21:32:05] Campos: {"id_produto":"2","quantidade":"1","preco":"150.00","subtotal":150,"id_orcamento":"15"}
+[16:34:28] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[16:34:28] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[16:34:28] Campos: {"id_produto":"2","quantidade":"1","preco":"150.00","subtotal":150,"id_orcamento":"16"}
+[16:46:58] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[16:46:58] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[16:46:58] Campos: {"id_produto":"1","quantidade":"1","preco":"1500.00","subtotal":1500,"id_orcamento":"17"}
+[16:53:11] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[16:53:11] Consulta: INSERT INTO itens_orcamento (id_produto, quantidade, preco, subtotal, id_orcamento) VALUES (?, ?, ?, ?, ?)
+[16:53:11] Campos: {"id_produto":"1","quantidade":"2","preco":"1500.00","subtotal":3000,"id_orcamento":"20"}
+[19:42:06] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[19:42:06] Consulta: INSERT INTO itens_tabela_preco (id, id_tabela, id_produto, preco, produto_nome, categoria, unidade_medida) VALUES (?, ?, ?, ?, ?, ?, ?)
+[19:42:06] Campos: {"id":2,"id_tabela":"6","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29","categoria":"Bicicletas","unidade_medida":"unidade"}
+[20:05:46] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[20:05:46] Consulta: INSERT INTO itens_tabela_preco (id, id_tabela, id_produto, preco, produto_nome, categoria, unidade_medida) VALUES (?, ?, ?, ?, ?, ?, ?)
+[20:05:46] Campos: {"id":2,"id_tabela":"7","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29","categoria":"Bicicletas","unidade_medida":"unidade"}
+[20:06:53] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[20:06:53] Consulta: INSERT INTO itens_tabela_preco (id, id_tabela, id_produto, preco, produto_nome, categoria, unidade_medida) VALUES (?, ?, ?, ?, ?, ?, ?)
+[20:06:53] Campos: {"id":2,"id_tabela":"8","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29","categoria":"Bicicletas","unidade_medida":"unidade"}
+[20:09:22] Erro ao inserir registro: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '2' for key 'PRIMARY'
+[20:09:22] Consulta: INSERT INTO itens_tabela_preco (id, id_tabela, id_produto, preco) VALUES (?, ?, ?, ?)
+[20:09:22] Campos: {"id":2,"id_tabela":"9","id_produto":1,"preco":"5500.00"}
+[20:11:24] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[20:11:24] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco) VALUES (?, ?, ?)
+[20:11:24] Campos: {"id_tabela":"10","id_produto":1,"preco":"5500.00"}
+[20:12:43] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[20:12:43] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco) VALUES (?, ?, ?)
+[20:12:43] Campos: {"id_tabela":"11","id_produto":1,"preco":"5500.00"}

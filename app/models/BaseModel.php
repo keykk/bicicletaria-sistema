@@ -59,6 +59,10 @@ class BaseModel {
             }
             return false;
         } catch (Exception $e) {
+            
+            gravarLog("Erro ao inserir registro: " . $e->getMessage());
+            gravarLog("Consulta: " . $sql);
+            gravarLog("Campos: " . json_encode($data));
             return false;
         }
     }

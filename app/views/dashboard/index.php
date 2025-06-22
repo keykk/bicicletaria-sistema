@@ -85,25 +85,25 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <a href="/produto/novo" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <a href="<?php echo BASE_URL; ?>/produto/novo" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
                             <i class="bi bi-plus-circle fs-1 mb-2"></i>
                             <span>Novo Produto</span>
                         </a>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <a href="/orcamento/novo" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <a href="<?php echo BASE_URL; ?>/orcamento/novo" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
                             <i class="bi bi-file-plus fs-1 mb-2"></i>
                             <span>Novo Orçamento</span>
                         </a>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <a href="/estoque/entrada" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <a href="<?php echo BASE_URL; ?>/estoque/entrada" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
                             <i class="bi bi-arrow-down-circle fs-1 mb-2"></i>
                             <span>Entrada Estoque</span>
                         </a>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <a href="/tabela-preco/nova" class="btn btn-outline-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <a href="<?php echo BASE_URL; ?>/tabelapreco/nova" class="btn btn-outline-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
                             <i class="bi bi-tag fs-1 mb-2"></i>
                             <span>Nova Tabela Preço</span>
                         </a>
@@ -127,7 +127,7 @@
             </div>
             <div class="card-body">
                 <p class="mb-2">Existem <strong><?= $produtos_estoque_baixo ?></strong> produtos com estoque baixo que precisam de atenção.</p>
-                <a href="/estoque" class="btn btn-warning btn-sm">
+                <a href="<?php echo BASE_URL; ?>/estoque" class="btn btn-warning btn-sm">
                     <i class="bi bi-eye"></i>
                     Ver Relatório de Estoque
                 </a>
@@ -177,25 +177,25 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 mb-2">
-                        <a href="/produto" class="btn btn-link p-0">
+                        <a href="<?php echo BASE_URL; ?>/produto" class="btn btn-link p-0">
                             <i class="bi bi-box-seam"></i>
                             Gerenciar Produtos
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/estoque" class="btn btn-link p-0">
+                        <a href="<?php echo BASE_URL; ?>/estoque" class="btn btn-link p-0">
                             <i class="bi bi-boxes"></i>
                             Controle de Estoque
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/orcamento" class="btn btn-link p-0">
+                        <a href="<?php echo BASE_URL; ?>/orcamento" class="btn btn-link p-0">
                             <i class="bi bi-file-text"></i>
                             Listar Orçamentos
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/tabela-preco" class="btn btn-link p-0">
+                        <a href="<?php echo BASE_URL; ?>/tabelapreco" class="btn btn-link p-0">
                             <i class="bi bi-currency-dollar"></i>
                             Tabelas de Preço
                         </a>
