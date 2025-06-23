@@ -25,7 +25,7 @@
                             Relatório de Vendas
                         </h5>
                         <p class="card-text">Análise detalhada das vendas por período, incluindo gráficos e estatísticas.</p>
-                        <a href="/relatorio/vendas" class="btn btn-primary">
+                        <a href="<?php echo BASE_URL; ?>/relatorio/vendas" class="btn btn-primary">
                             <i class="bi bi-eye"></i>
                             Visualizar
                         </a>
@@ -45,7 +45,7 @@
                             Produtos Mais Vendidos
                         </h5>
                         <p class="card-text">Ranking dos produtos com maior volume de vendas no período selecionado.</p>
-                        <a href="/relatorio/produtos-mais-vendidos" class="btn btn-success">
+                        <a href="<?php echo BASE_URL; ?>/relatorio/produtosmaisvendidos" class="btn btn-success">
                             <i class="bi bi-eye"></i>
                             Visualizar
                         </a>
@@ -65,7 +65,7 @@
                             Estoque Crítico
                         </h5>
                         <p class="card-text">Produtos com estoque baixo que precisam de reposição urgente.</p>
-                        <a href="/relatorio/estoque-critico" class="btn btn-warning">
+                        <a href="<?php echo BASE_URL; ?>/relatorio/estoquecritico" class="btn btn-warning">
                             <i class="bi bi-eye"></i>
                             Visualizar
                         </a>
@@ -85,7 +85,7 @@
                             Dashboard Executivo
                         </h5>
                         <p class="card-text">Visão geral do negócio com indicadores-chave de performance.</p>
-                        <a href="/relatorio/dashboard-executivo" class="btn btn-info">
+                        <a href="<?php echo BASE_URL; ?>/relatorio/dashboardexecutivo" class="btn btn-info">
                             <i class="bi bi-eye"></i>
                             Visualizar
                         </a>
@@ -105,7 +105,7 @@
                             Relatório de Estoque
                         </h5>
                         <p class="card-text">Situação completa do estoque com valores e quantidades.</p>
-                        <a href="/estoque" class="btn btn-secondary">
+                        <a href="<?php echo BASE_URL; ?>/estoque" class="btn btn-secondary">
                             <i class="bi bi-eye"></i>
                             Visualizar
                         </a>
@@ -126,11 +126,11 @@
                         </h5>
                         <p class="card-text">Exporte relatórios em formato CSV para análise externa.</p>
                         <div class="btn-group w-100" role="group">
-                            <a href="/relatorio/exportar-csv?tipo=vendas" class="btn btn-outline-dark btn-sm">
+                            <a href="<?php echo BASE_URL; ?>/relatorio/exportarcsv?tipo=vendas" class="btn btn-outline-dark btn-sm">
                                 <i class="bi bi-download"></i>
                                 Vendas
                             </a>
-                            <a href="/relatorio/exportar-csv?tipo=estoque" class="btn btn-outline-dark btn-sm">
+                            <a href="<?php echo BASE_URL; ?>/relatorio/exportarcsv?tipo=estoque" class="btn btn-outline-dark btn-sm">
                                 <i class="bi bi-download"></i>
                                 Estoque
                             </a>
@@ -155,28 +155,28 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 mb-2">
-                        <a href="/relatorio/vendas?data_inicio=<?= date('Y-m-01') ?>&data_fim=<?= date('Y-m-t') ?>" 
+                        <a href="<?php echo BASE_URL; ?>/relatorio/vendas?data_inicio=<?= date('Y-m-01') ?>&data_fim=<?= date('Y-m-t') ?>" 
                            class="btn btn-outline-primary w-100">
                             <i class="bi bi-calendar-month"></i>
                             Vendas do Mês
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/relatorio/vendas?data_inicio=<?= date('Y-m-d', strtotime('-7 days')) ?>&data_fim=<?= date('Y-m-d') ?>" 
+                        <a href="<?php echo BASE_URL; ?>/relatorio/vendas?data_inicio=<?= date('Y-m-d', strtotime('-7 days')) ?>&data_fim=<?= date('Y-m-d') ?>" 
                            class="btn btn-outline-success w-100">
                             <i class="bi bi-calendar-week"></i>
                             Últimos 7 Dias
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/relatorio/estoque-critico?limite=5" 
+                        <a href="<?php echo BASE_URL; ?>/relatorio/estoquecritico?limite=5" 
                            class="btn btn-outline-warning w-100">
                             <i class="bi bi-exclamation-triangle"></i>
                             Estoque ≤ 5
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="/relatorio/produtos-mais-vendidos?data_inicio=<?= date('Y-m-01') ?>&data_fim=<?= date('Y-m-t') ?>" 
+                        <a href="<?php echo BASE_URL; ?>/relatorio/produtosmaisvendidos?data_inicio=<?= date('Y-m-01') ?>&data_fim=<?= date('Y-m-t') ?>" 
                            class="btn btn-outline-info w-100">
                             <i class="bi bi-trophy"></i>
                             Top Produtos

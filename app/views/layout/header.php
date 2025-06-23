@@ -110,20 +110,7 @@
     <main class="<?= isset($_SESSION['user_id']) ? 'container-fluid mt-4' : '' ?>">
         <?php if (isset($_SESSION['user_id'])): ?>
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/dashboard">Home</a></li>
-                <?php if (isset($breadcrumb) && is_array($breadcrumb)): ?>
-                    <?php foreach ($breadcrumb as $item): ?>
-                        <?php if (isset($item['url'])): ?>
-                            <li class="breadcrumb-item"><a href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
-                        <?php else: ?>
-                            <li class="breadcrumb-item active"><?= $item['title'] ?></li>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </ol>
-        </nav>
+        
         
         <!-- Alerts -->
         <?php if (isset($_SESSION['success'])): ?>

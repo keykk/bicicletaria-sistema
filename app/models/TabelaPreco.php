@@ -17,30 +17,29 @@ class TabelaPreco extends BaseModel {
      */
     public function criarTabela($dadosTabela, $itens = []) {
         try {
-            $itemTabelaModel = new ItemTabelaPreco();
-            $itemTabelaModel->db->beginTransaction();
+            $this->db->beginTransaction();
             
             // Inserir a tabela de preço
             $idTabela = $this->insert($dadosTabela);
             
             if (!$idTabela) {
-                $itemTabelaModel->db->rollBack();
+                $this->db->rollBack();
                 return false;
             }
             
             // Inserir os itens da tabela de preço
             if (!empty($itens)) {
-               
+               $itemTabelaModel = new ItemTabelaPreco();
                 foreach ($itens as $item) {
                     $item['id_tabela'] = $idTabela;
                     if (!$itemTabelaModel->insert($item)) {
-                        $itemTabelaModel->db->rollBack();
+                        $this->db->rollBack();
                         return false;
                     }
                 }
             }
             
-            $itemTabelaModel->db->commit();
+            $this->db->commit();
             return $idTabela;
         } catch (Exception $e) {
             gravarLog("Erro ao criar tabela de preço: " . $e->getMessage());
@@ -103,8 +102,11 @@ class TabelaPreco extends BaseModel {
             $itens = $tabelaOrigem['itens'];
             
             $itens = array_map(function($item) {
-                unset($item['produto_nome'], $item['categoria'], $item['unidade_medida'], $item['id']);
-                return $item;
+                return [
+                    'id_tabela' => $item['id_tabela'],
+                    'id_produto' => $item['id_produto'],
+                    'preco' => $item['preco'],
+                ];
             }, $itens);
 
             return $this->criarTabela($dadosNovaTabela, $itens);

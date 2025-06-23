@@ -1,0 +1,18 @@
+[01:45:34] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[01:45:34] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco, produto_nome) VALUES (?, ?, ?, ?)
+[01:45:34] Campos: {"id_tabela":"14","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29"}
+[01:48:21] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[01:48:21] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco, produto_nome) VALUES (?, ?, ?, ?)
+[01:48:21] Campos: {"id_tabela":"15","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29"}
+[01:49:40] Erro ao inserir registro: SQLSTATE[HY000]: General error: 1205 Lock wait timeout exceeded; try restarting transaction
+[01:49:40] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco) VALUES (?, ?, ?)
+[01:49:40] Campos: {"id_tabela":"16","id_produto":1,"preco":"5500.00"}
+[02:05:19] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_nome' in 'field list'
+[02:05:19] Consulta: INSERT INTO itens_tabela_preco (id_tabela, id_produto, preco, produto_nome) VALUES (?, ?, ?, ?)
+[02:05:19] Campos: {"id_tabela":"18","id_produto":1,"preco":"5500.00","produto_nome":"Bicicleta Mountain Bike Aro 29"}
+[02:40:16] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_tabela' in 'field list'
+[02:40:16] Consulta: INSERT INTO itens_orcamento (id_tabela, id_produto, preco) VALUES (?, ?, ?)
+[02:40:16] Campos: {"id_tabela":"21","id_produto":1,"preco":"5500.00"}
+[02:40:33] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_tabela' in 'field list'
+[02:40:33] Consulta: INSERT INTO itens_orcamento (id_tabela, id_produto, preco) VALUES (?, ?, ?)
+[02:40:33] Campos: {"id_tabela":"22","id_produto":1,"preco":"5500.00"}

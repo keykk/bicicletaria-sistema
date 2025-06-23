@@ -278,5 +278,37 @@ class RelatorioController extends BaseController {
         fclose($output);
         exit;
     }
+
+    /**
+     * Exportar lista de produtos para CSV
+     */
+    private function exportarProdutosCSV() {
+        $produtos = $this->produtoModel->findAll();
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="produtos_' . date('Y-m-d') . '.csv"');
+
+        $output = fopen('php://output', 'w');
+
+        // BOM para UTF-8
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        // Cabeçalho
+        fputcsv($output, ['ID', 'Nome', 'Categoria', 'Preço de Venda', 'Descrição'], ';');
+
+        // Dados
+        foreach ($produtos as $produto) {
+            fputcsv($output, [
+                $produto['id'],
+                $produto['nome'],
+                $produto['categoria'],
+                number_format($produto['preco_venda'], 2, ',', '.'),
+                $produto['descricao'] ?? ''
+            ], ';');
+        }
+
+        fclose($output);
+        exit;
+    }
 }
 

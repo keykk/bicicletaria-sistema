@@ -11,12 +11,14 @@ class Database {
     private $password = '';
     private $charset = 'utf8mb4';
     private $pdo;
+    private static $instance = null;
 
     /**
      * Conecta ao banco de dados
      * @return PDO
      */
-    public function connect() {
+    //public function connect() {
+    private function __construct() {
         if ($this->pdo === null) {
             try {
                 $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset={$this->charset}";
@@ -32,9 +34,14 @@ class Database {
             }
         }
         
-        return $this->pdo;
+        //return $this->pdo;
     }
-
+    public static function connect() {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance->pdo;
+    }
     /**
      * Fecha a conexão com o banco de dados
      */

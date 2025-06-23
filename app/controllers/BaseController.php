@@ -8,8 +8,9 @@ class BaseController {
     protected $db;
     
     public function __construct() {
-        $database = new Database();
-        $this->db = $database->connect();
+        //$database = new Database();
+        //$this->db = $database->connect();
+        $this->db = Database::connect(); // Usando o singleton para obter a conexão
     }
     
     /**

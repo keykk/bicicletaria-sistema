@@ -149,16 +149,36 @@ class ConfiguracaoController extends BaseController {
         $this->requireLogin();
         
         try {
-            $sql = "SELECT id, nome, email, nivel_acesso, ativo, data_criacao FROM usuarios ORDER BY nome";
+            $sql = "SELECT id, nome, email, nivel_acesso as nivel, ativo, dths_cadastro as data_criacao, nome_usuario as usuario FROM usuarios ORDER BY nome";
+            /*
+            nome,email,ativo,data_criacao
+            */
             $stmt = $this->db->query($sql);
             $usuarios = $stmt->fetchAll();
         } catch (Exception $e) {
             $usuarios = [];
         }
-        
+        $usuarios_status = [
+            0 => 'inativo',
+            1 => 'ativo',
+            -1 => 'inativo'
+        ];
+
+        $usuarios = array_map(function($usuario) use ($usuarios_status) {
+            $usuario['status'] = $usuarios_status[$usuario['ativo']] ?? 'desconhecido';
+            return $usuario;
+        }, $usuarios);
+
+        $estatisticas = [
+            'total_usuarios' => count($usuarios),
+            'ativos' => count(array_filter($usuarios, function($u) { return $u['ativo'] == 1; })),
+            'usuarios_inativos' => count(array_filter($usuarios, function($u) { return $u['ativo'] == 0; })),
+        ];
+
         $data = [
             'title' => 'Gerenciamento de Usuários',
-            'usuarios' => $usuarios
+            'usuarios' => $usuarios,
+            'estatisticas' => $estatisticas
         ];
         
         $this->loadView('configuracoes/usuarios', $data);
@@ -180,6 +200,40 @@ class ConfiguracaoController extends BaseController {
         
         $this->loadView('configuracoes/usuario_form', $data);
     }
+
+    /*
+    Editar usuario
+    */
+    public function editarUsuario($id) {
+        $this->requireLogin();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->salvarUsuario();
+        }
+        
+        try {
+            $sql = "SELECT id, nome, email, nivel_acesso as nivel, ativo FROM usuarios WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$id]);
+            $usuario = $stmt->fetch();
+            
+            if (!$usuario) {
+                throw new Exception('Usuário não encontrado');
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Erro ao carregar usuário: ' . $e->getMessage();
+            $this->redirect('/configuracao/usuarios');
+            return;
+        }
+        
+        $data = [
+            'title' => 'Editar Usuário',
+            'usuario' => $usuario
+        ];
+        
+        $this->loadView('configuracoes/usuario_form', $data);
+    }
+
     
     /**
      * Salvar usuário
