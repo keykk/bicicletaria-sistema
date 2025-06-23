@@ -42,7 +42,7 @@ class ItemTabelaPreco extends BaseModel {
      * @param float $preco
      * @return bool
      */
-    public function updateOrInsertPreco($idTabela, $idProduto, $preco) {
+    public function updateOrInsertPreco($idTabela, $idProduto, $preco, $modelo_lucratividade = null, $porcentual_lucratividade = null, $valor_revenda = null) {
         try {
             // Verifica se já existe
             $stmt = $this->db->prepare("
@@ -51,17 +51,22 @@ class ItemTabelaPreco extends BaseModel {
             ");
             $stmt->execute([$idTabela, $idProduto]);
             $existing = $stmt->fetch();
+
+            $updates = [
+                'preco' => $preco,
+                'modelo_lucratividade' => $modelo_lucratividade,
+                'porcentual_lucratividade' => $porcentual_lucratividade,
+                'valor_revenda' => $valor_revenda
+            ];
             
             if ($existing) {
                 // Atualiza
-                return $this->update($existing['id'], ['preco' => $preco]);
+                return $this->update($existing['id'], $updates);
             } else {
                 // Insere
-                return $this->insert([
-                    'id_tabela' => $idTabela,
-                    'id_produto' => $idProduto,
-                    'preco' => $preco
-                ]);
+                $updates['id_tabela'] = $idTabela;
+                $updates['id_produto'] = $idProduto;
+                return $this->insert($updates);
             }
         } catch (Exception $e) {
             return false;

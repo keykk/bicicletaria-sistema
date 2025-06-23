@@ -94,11 +94,23 @@ class TabelaPrecoController extends BaseController {
         }
         
         $produtos = $this->produtoModel->findAll();
+
+        $modelo_lucratividade = [ 
+            [
+                'id' => 0,
+                'descricao' => 'Markup (%)'
+            ],
+            [
+                'id' => 1,
+                'descricao' => 'Margem Bruta (%)'
+            ]
+        ];
         
         $data = [
             'title' => 'Editar Tabela de Preço',
             'tabela' => $tabela,
             'produtos' => $produtos,
+            'modelo_lucratividade' => $modelo_lucratividade,
             'errors' => $_SESSION['errors'] ?? [],
             'success' => $_SESSION['success'] ?? null
         ];
@@ -120,13 +132,18 @@ class TabelaPrecoController extends BaseController {
         
         $idProduto = $_POST['id_produto'] ?? '';
         $preco = $_POST['preco'] ?? '';
+        $modelo_lucratividade = $_POST['modelo_lucratividade'] ?? '';
+        $porcentual_lucratividade = $_POST['porc'] ?? '';
+        $valor_revenda = $_POST['valor_revenda'] ?? '';
         
-        if (empty($idProduto) || empty($preco) || !is_numeric($preco) || $preco <= 0) {
+        if (empty($idProduto) || empty($preco) || !is_numeric($preco) || $preco <= 0 ||
+            empty($modelo_lucratividade) || !is_numeric($porcentual_lucratividade) || $porcentual_lucratividade < 0 ||
+            empty($valor_revenda) || !is_numeric($valor_revenda) || $valor_revenda < 0) {
             $_SESSION['errors'] = ['Produto e preço são obrigatórios'];
             $this->redirect("/tabelapreco/editar/$idTabela");
         }
         
-        if ($this->itemTabelaPrecoModel->updateOrInsertPreco($idTabela, $idProduto, $preco)) {
+        if ($this->itemTabelaPrecoModel->updateOrInsertPreco($idTabela, $idProduto, $preco, $modelo_lucratividade, $porcentual_lucratividade, $valor_revenda)) {
             $_SESSION['success'] = 'Produto adicionado à tabela com sucesso';
         } else {
             $_SESSION['errors'] = ['Erro ao adicionar produto à tabela'];

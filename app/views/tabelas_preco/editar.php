@@ -46,7 +46,7 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="preco" class="form-label">Preço na Tabela *</label>
+                        <label for="preco" class="form-label">Preço de Custo *</label>
                         <div class="input-group">
                             <span class="input-group-text">R$</span>
                             <input type="number" class="form-control" id="preco" name="preco" 
@@ -54,6 +54,36 @@
                         </div>
                         <div class="form-text" id="preco-original" style="display: none;">
                             Preço original: <span class="text-muted"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modelo_lucratividade" class="form-label">Modelos e métodos para calcular a lucratividade</label>
+                        <select class="form-select" id="modelo_lucratividade" name="modelo_lucratividade" required>
+                            <option value="">Selecione um modelo</option>
+                            <?php foreach ($modelo_lucratividade as $model): ?>
+                                <option <?php if ($model['id'] ?? '0' == 1) echo 'Selected' ?> value="<?= $model['id'] ?>" >
+                                    <?= htmlspecialchars($model['descricao']) ?> 
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="porc" class="form-label">Porcentual da lucratividade</label>
+                        <div class="input-group">
+                            <span class="input-group-text">%</span>
+                            <input type="number" class="form-control" id="porc" name="porc" 
+                                   step="0.01" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="valor_revenda" class="form-label">Valor de Revenda</label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            <input type="number" class="form-control" id="valor_revenda" name="valor_revenda" 
+                                   step="0.01" min="0" required>
                         </div>
                     </div>
                     
@@ -127,25 +157,14 @@
                                 <tr>
                                     <th>Produto</th>
                                     <th>Categoria</th>
-                                    <th>Preço Original</th>
-                                    <th>Preço na Tabela</th>
-                                    <th>Diferença</th>
+                                    <th>Custo</th>
+                                    <th>Revenda</th>
+                                    <th>Modelo</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($tabela['itens'] as $item): ?>
-                                    <?php 
-                                    $precoOriginal = 0; // Buscar preço original do produto
-                                    foreach ($produtos as $produto) {
-                                        if ($produto['id'] == $item['id_produto']) {
-                                            $precoOriginal = $produto['preco_venda'];
-                                            break;
-                                        }
-                                    }
-                                    $diferenca = $item['preco'] - $precoOriginal;
-                                    $percentualDiferenca = $precoOriginal > 0 ? (($diferenca / $precoOriginal) * 100) : 0;
-                                    ?>
+                                <?php foreach ($tabela['itens'] as $item): ?> 
                                     <tr>
                                         <td>
                                             <strong><?= htmlspecialchars($item['produto_nome']) ?></strong>
@@ -157,24 +176,35 @@
                                         </td>
                                         <td>
                                             <span class="text-muted">
-                                                R$ <?= number_format($precoOriginal, 2, ',', '.') ?>
+                                                R$ <?= number_format($item['preco'], 2, ',', '.') ?>
                                             </span>
                                         </td>
                                         <td>
                                             <strong class="text-primary">
-                                                R$ <?= number_format($item['preco'], 2, ',', '.') ?>
+                                                R$ <?= number_format($item['valor_revenda'], 2, ',', '.') ?>
                                             </strong>
                                         </td>
                                         <td>
-                                            <?php if ($diferenca > 0): ?>
+                                            <?php 
+                                            if ($item['modelo_lucratividade'] == 1): // Markup
+                                                ?>
+                                                    <i class="bi bi-graph-up"></i> Margem
+                                                <?php
+                                            else: // Margem Bruta
+                                                ?>
+                                                    <i class="bi bi-tag"></i> Markup
+                                            <?php
+                                            endif;
+                                            ?>
+                                            <?php if ($item['porcentual_lucratividade'] > 0): ?>
                                                 <span class="text-success">
                                                     <i class="bi bi-arrow-up"></i>
-                                                    +<?= number_format($percentualDiferenca, 1) ?>%
+                                                    +<?= number_format($item['porcentual_lucratividade'], 1) ?>%
                                                 </span>
-                                            <?php elseif ($diferenca < 0): ?>
+                                            <?php elseif ($item['porcentual_lucratividade'] < 0): ?>
                                                 <span class="text-danger">
                                                     <i class="bi bi-arrow-down"></i>
-                                                    <?= number_format($percentualDiferenca, 1) ?>%
+                                                    <?= number_format($item['porcentual_lucratividade'], 1) ?>%
                                                 </span>
                                             <?php else: ?>
                                                 <span class="text-muted">
@@ -182,6 +212,7 @@
                                                     0%
                                                 </span>
                                             <?php endif; ?>
+                                            
                                         </td>
                                         <td>
                                             <a href="<?php echo BASE_URL; ?>/tabelapreco/removerproduto/<?= $tabela['id'] ?>/<?= $item['id_produto'] ?>" 
@@ -219,6 +250,39 @@ checkJQuery(function($) {
         } else {
             $('#preco-original').hide();
         }
+    });
+
+    // Atualizar preço de custo ao selecionar modelo de lucratividade
+    $('#modelo_lucratividade, #porc').on('change keyup', function(event) {
+        var modelo = $('#modelo_lucratividade').val();
+        var preco = parseFloat($('#preco').val()) || 0;
+        var porc = parseFloat($('#porc').val()) || 0;
+        var valorRevenda = 0;
+        if (modelo == 0) { // Markup
+            valorRevenda = preco * (1 + porc / 100);
+        } else if (modelo == 1) { // Margem Bruta
+            valorRevenda = preco / (1 - (porc / 100));
+        }
+        $('#valor_revenda').val(valorRevenda.toFixed(2));
+
+        //$('#valor_revenda').trigger('input'); // Atualizar visualização
+
+        //$('#valor_revenda').trigger('change'); // Atualizar visualização
+
+    });
+
+    // Atualizar porcentual de lucratividade ao alterar preço de custo
+    $('#preco, #valor_revenda').on('change keyup', function(event) {
+        var preco = parseFloat($('#preco').val()) || 0;
+        var modelo = $('#modelo_lucratividade').val();
+        var porc = parseFloat($('#porc').val()) || 0;
+        var valorRevenda = parseFloat($('#valor_revenda').val()) || 0;
+        if (modelo == 0 && preco > 0) { // Markup
+            porc = ((valorRevenda / preco) - 1) * 100;
+        } else if (modelo == 1 && valorRevenda > 0) { // Margem Bruta
+            porc = (1 - (preco / valorRevenda)) * 100;
+        }
+        $('#porc').val(porc.toFixed(2));
     });
 });
 </script>
