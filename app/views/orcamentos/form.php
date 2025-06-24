@@ -25,6 +25,18 @@
                     </h6>
                 </div>
                 <div class="card-body">
+
+                    <div class="mb-3">
+                        <label for="tabela_preco" class="form-label">Tabela de Preço</label>
+                        <select class="form-select" id="tabela_preco" name="tabela_preco" required>
+                            <option value="">Selecione uma Tabela</option>
+                            <?php foreach ($tabelas as $tabela): ?>
+                                <option value="<?= $tabela['id'] ?>" >
+                                    <?= htmlspecialchars($tabela['nome']) ?> 
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Nome do Cliente *</label>
                         <input type="text" class="form-control" id="cliente" name="cliente" required>

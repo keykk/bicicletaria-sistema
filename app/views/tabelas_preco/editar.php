@@ -109,11 +109,22 @@
                         <label for="percentual" class="form-label">Percentual de Ajuste</label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="percentual" name="percentual" 
-                                   step="0.01" placeholder="Ex: 10 ou -5">
+                                   step="0.01">
                             <span class="input-group-text">%</span>
                         </div>
+                        <div class="mb-3">
+                            <label for="modelo_lucratividade1" class="form-label">Modelos e métodos para calcular a lucratividade</label>
+                            <select class="form-select" id="modelo_lucratividade1" name="modelo_lucratividade1" required>
+                                <option value="">Selecione um modelo</option>
+                                <?php foreach ($modelo_lucratividade as $model): ?>
+                                    <option <?php if ($model['id'] ?? '0' == 1) echo 'Selected' ?> value="<?= $model['id'] ?>" >
+                                        <?= htmlspecialchars($model['descricao']) ?> 
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <div class="form-text">
-                            Use valores positivos para aumento e negativos para desconto
+                            Alterar o percentual de todos os produtos desta tabela de preço.
                         </div>
                     </div>
                     

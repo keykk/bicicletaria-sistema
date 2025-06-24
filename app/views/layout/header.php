@@ -95,9 +95,11 @@
                             <?= $_SESSION['user_data']['nome_usuario'] ?? 'Usuário' ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/perfil">Meu Perfil</a></li>
+                            <li><a class="dropdown-item bi bi-sliders" href="<?php echo BASE_URL; ?>/configuracao"> Configurações</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/login/logout">Sair</a></li>
+                            <li><a class="dropdown-item bi bi-person" href="<?php echo BASE_URL; ?>/perfil"> Meu Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item bi bi-box-arrow-right" href="<?php echo BASE_URL; ?>/login/logout"> Sair</a></li>
                         </ul>
                     </li>
                 </ul>

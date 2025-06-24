@@ -70,7 +70,7 @@ class BaseController {
      */
     protected function requireLogin() {
         if (!$this->isLoggedIn()) {
-            $this->redirect(BASE_URL . '/login');
+            $this->redirect('/login');
         }
     }
     

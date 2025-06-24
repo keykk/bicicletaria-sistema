@@ -106,6 +106,9 @@ class TabelaPreco extends BaseModel {
                     'id_tabela' => $item['id_tabela'],
                     'id_produto' => $item['id_produto'],
                     'preco' => $item['preco'],
+                    'modelo_lucratividade' => $item['modelo_lucratividade'],
+                    'porcentual_lucratividade' => $item['porcentual_lucratividade'],
+                    'valor_revenda' => $item['valor_revenda']
                 ];
             }, $itens);
 
@@ -121,15 +124,29 @@ class TabelaPreco extends BaseModel {
      * @param float $percentualAumento
      * @return bool
      */
-    public function atualizarPrecosEmMassa($idTabela, $percentualAumento) {
+    public function atualizarPrecosEmMassa($idTabela, $percentualAumento, $modelo_lucratividade = null) {
         try {
-            $sql = "
+            $sql = "";
+            //Margem de lucro
+            if($modelo_lucratividade ?? '1' == 1){
+                $sql = "
                 UPDATE itens_tabela_preco 
-                SET preco = preco * (1 + ? / 100)
+                SET valor_revenda = preco / (1 - (? / 100)), porcentual_lucratividade = ?, 
+                   modelo_lucratividade = ?
                 WHERE id_tabela = ?
-            ";
+                ";
+            } else {
+                // Markup
+                $sql = "
+                UPDATE itens_tabela_preco 
+                SET valor_revenda = preco * (1 + (? / 100)), porcentual_lucratividade = ?,
+                    modelo_lucratividade = ?
+                WHERE id_tabela = ?
+                ";
+            }
+
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$percentualAumento, $idTabela]);
+            return $stmt->execute([$percentualAumento, $percentualAumento, $modelo_lucratividade, $idTabela]);
         } catch (Exception $e) {
             return false;
         }

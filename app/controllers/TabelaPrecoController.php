@@ -132,13 +132,16 @@ class TabelaPrecoController extends BaseController {
         
         $idProduto = $_POST['id_produto'] ?? '';
         $preco = $_POST['preco'] ?? '';
-        $modelo_lucratividade = $_POST['modelo_lucratividade'] ?? '';
+        $modelo_lucratividade = $_POST['modelo_lucratividade'] ?? '1';
         $porcentual_lucratividade = $_POST['porc'] ?? '';
         $valor_revenda = $_POST['valor_revenda'] ?? '';
+
+        $valida_modelo = in_array($modelo_lucratividade, [0, 1]);
         
         if (empty($idProduto) || empty($preco) || !is_numeric($preco) || $preco <= 0 ||
-            empty($modelo_lucratividade) || !is_numeric($porcentual_lucratividade) || $porcentual_lucratividade < 0 ||
-            empty($valor_revenda) || !is_numeric($valor_revenda) || $valor_revenda < 0) {
+            !is_numeric($porcentual_lucratividade) || $porcentual_lucratividade < 0 ||
+            empty($valor_revenda) || !is_numeric($valor_revenda) || $valor_revenda < 0 ||
+            !$valida_modelo) {
             $_SESSION['errors'] = ['Produto e preço são obrigatórios'];
             $this->redirect("/tabelapreco/editar/$idTabela");
         }
@@ -201,13 +204,16 @@ class TabelaPrecoController extends BaseController {
         }
         
         $percentual = $_POST['percentual'] ?? '';
+        (int)$modelo_lucratividade = $_POST['modelo_lucratividade1'] ?? '1';
+
+        $valida_modelo = in_array($modelo_lucratividade, [0, 1]);
         
-        if (empty($percentual) || !is_numeric($percentual)) {
-            $_SESSION['errors'] = ['Percentual é obrigatório'];
+        if (empty($percentual) || !is_numeric($percentual) || !$valida_modelo) {
+            $_SESSION['errors'] = ['Percentual é obrigatório: '. $percentual. ' Modelo: '.$modelo_lucratividade];
             $this->redirect("/tabelapreco/editar/$id");
         }
         
-        if ($this->tabelaPrecoModel->atualizarPrecosEmMassa($id, $percentual)) {
+        if ($this->tabelaPrecoModel->atualizarPrecosEmMassa($id, $percentual, $modelo_lucratividade)) {
             $_SESSION['success'] = "Preços atualizados com {$percentual}% de ajuste";
         } else {
             $_SESSION['errors'] = ['Erro ao atualizar preços'];

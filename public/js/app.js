@@ -144,6 +144,7 @@ var Orcamento = {
         var template = $('#item-template').html();
         var index = $('.orcamento-item').length;
         
+        
         template = template.replace(/\[INDEX\]/g, index);
         $('#itens-orcamento').append(template);
         
@@ -185,11 +186,15 @@ var Orcamento = {
     buscarPrecoProduto: function(select, path = '') {
         var produtoId = $(select).val();
         var item = $(select).closest('.orcamento-item');
+        var tabelaPreco = $('#tabela_preco').val();
         
         if (produtoId) {
-            $.get(path+'/orcamento/apiPrecoProduto/' + produtoId, function(response) {
+            $.get(path+'/orcamento/apiPrecoProduto/' + produtoId + '/' + tabelaPreco, function(response) {
                 if (response.preco) {
                     item.find('.preco').val(response.preco);
+                    Orcamento.calcularSubtotal(item);
+                } else {
+                    item.find('.preco').val('');
                     Orcamento.calcularSubtotal(item);
                 }
             });

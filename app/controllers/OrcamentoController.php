@@ -56,10 +56,13 @@ class OrcamentoController extends BaseController {
         $this->requireLogin();
         
         $produtos = $this->produtoModel->findAll();
+        $tabela_venda = new TabelaPreco();
+        $tabelas = $tabela_venda->findAll();
         
         $data = [
             'title' => 'Novo Orçamento',
             'produtos' => $produtos,
+            'tabelas' => $tabelas,
             'errors' => $_SESSION['errors'] ?? []
         ];
         
@@ -82,7 +85,8 @@ class OrcamentoController extends BaseController {
             'cliente' => $_POST['cliente'] ?? '',
             'telefone' => $_POST['telefone'] ?? '',
             'email' => $_POST['email'] ?? '',
-            'valor_total' => 0 // Será calculado
+            'valor_total' => 0, // Será calculado
+            'id_tabela_preco' => $_POST['tabela_preco'] ?? null
         ];
         
         $itens = [];
@@ -195,15 +199,17 @@ class OrcamentoController extends BaseController {
     /**
      * API para obter preço do produto
      */
-    public function apiPrecoProduto($idProduto) {
+    public function apiPrecoProduto($idProduto, $tabela = null) {
         $this->requireLogin();
-        
-        $produto = $this->produtoModel->findById($idProduto);
+
+        $itemTabela = new ItemTabelaPreco();
+        $produto = $itemTabela->findWhere(['id_produto' => $idProduto, 'id_tabela' => $tabela]);
+        $prod = $this->produtoModel->findById($idProduto);
         
         if ($produto) {
             $this->json([
-                'preco' => $produto['preco_venda'],
-                'unidade_medida' => $produto['unidade_medida']
+                'preco' => $produto[0]['valor_revenda'] ?? '',
+                'unidade_medida' => $prod['unidade_medida'] ?? ''
             ]);
         } else {
             $this->json(['error' => 'Produto não encontrado']);

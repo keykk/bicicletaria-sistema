@@ -1,0 +1,7 @@
+[00:10:24] Teste: 2 - Tabela: 
+[00:13:51] Teste: 2 - Tabela: 
+[00:14:42] Teste: 2 - Tabela: 
+[00:21:55] Teste: 1 - Tabela: 25
+[01:38:22] Erro ao inserir registro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_tabela' in 'field list'
+[01:38:22] Consulta: INSERT INTO orcamentos (cliente, telefone, email, valor_total, id_tabela) VALUES (?, ?, ?, ?, ?)
+[01:38:22] Campos: {"cliente":"Edson","telefone":"(14) 99685-4401","email":"keykkashi@gmail.com","valor_total":3328.58,"id_tabela":"25"}
