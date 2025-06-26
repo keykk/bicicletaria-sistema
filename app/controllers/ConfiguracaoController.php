@@ -94,14 +94,17 @@ class ConfiguracaoController extends BaseController {
      */
     public function empresa() {
         $this->requireLogin();
-        
+        $empresa_logada = $this->getSelectedEmpresa();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->salvarConfiguracaoEmpresa();
+            $this->salvarConfiguracaoEmpresa($empresa_logada['id'] ?? null);
         }
         
+        // Carregar informações da empresa
+        
+
         $data = [
             'title' => 'Configurações da Empresa',
-            'empresa' => Config::getEmpresaInfo()
+            'empresa' => $empresa_logada ?? Config::getEmpresaInfo()
         ];
         
         $this->loadView('configuracoes/empresa', $data);
@@ -110,11 +113,18 @@ class ConfiguracaoController extends BaseController {
     /**
      * Salvar configurações da empresa
      */
-    private function salvarConfiguracaoEmpresa() {
-        // Aqui você implementaria a lógica para salvar as configurações
-        // Por simplicidade, vamos apenas mostrar uma mensagem de sucesso
-        $_SESSION['success'] = 'Configurações da empresa atualizadas com sucesso';
-        $this->redirect('/configuracao/empresa');
+    private function salvarConfiguracaoEmpresa($id) {
+        $up_empresa = new PessoaEmpresa();
+        $resultado = $up_empresa->salvarEmpresa($id);
+        
+        if ($resultado['success'] ?? false) {
+            $_SESSION['success'] = $resultado['message'][0];
+            $up_empresa->atualizarSessao($resultado['id'] ?? $id);
+            $this->redirect("/configuracao/empresa");
+        } else {
+            $_SESSION['errors'] = $resultado['message'];
+            $this->redirect('/configuracao/empresa');
+        }
     }
     
     /**

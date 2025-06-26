@@ -64,11 +64,39 @@ class BaseController {
     protected function isLoggedIn() {
         return isset($_SESSION['user_id']);
     }
+
+    /**
+     * Verifica se o usuário selecionou uma empresa
+     * @return bool
+     */
+    protected function isEmpresaSelected() {
+        return isset($_SESSION['empresa_id']) && !empty($_SESSION['empresa_id']);
+    }
+
+    /**
+     * Requer que o usuário tenha uma empresa selecionada
+     */
+    protected function requireEmpresaSelected() {
+        if (!$this->isEmpresaSelected()) {
+            $this->redirect('/empresa');
+        }
+    }
     
     /**
      * Requer que o usuário esteja logado
      */
     protected function requireLogin() {
+        if (!$this->isLoggedIn()) {
+            $this->redirect('/login');
+        }
+       $this->requireEmpresaSelected(); // Verifica se a empresa está selecionada
+    }
+
+    /**
+     * Requer que o usuário esteja logado
+     * funçãodiferente para EmpresaController
+     */
+    protected function requireLogin_empresa() {
         if (!$this->isLoggedIn()) {
             $this->redirect('/login');
         }
@@ -84,5 +112,17 @@ class BaseController {
         }
         return null;
     }
+
+    /**
+     * Obtém a empresa selecionada
+     * @return array|null
+     */         
+    protected function getSelectedEmpresa() {
+        if ($this->isEmpresaSelected()) {
+            return $_SESSION['empresa_data'] ?? null;
+        }
+        return null;    
+    }
+
 }
 

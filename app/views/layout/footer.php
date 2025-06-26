@@ -1,6 +1,6 @@
     </main>
     
-    <?php if (isset($_SESSION['user_id'])): ?>
+    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['empresa_id'])): ?>
     <!-- Footer -->
     <footer class="bg-light mt-5 py-4">
         <div class="container-fluid">

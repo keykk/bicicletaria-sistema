@@ -166,10 +166,11 @@
 
     <!-- Cabeçalho -->
     <div class="header">
-        <div class="logo">🚲 BikeSystem</div>
+        <div class="logo">🚲 <?= strtoupper($empresa['nome'] ?? 'BikeSystem'); ?></div>
         <div class="company-info">
-            Sistema de Gestão de Bicicletaria<br>
-            Telefone: (11) 99999-9999 | Email: contato@bikesystem.com.br
+            <?= $empresa['slogan'] ?? 'Sistema de Gestão de Bicicletaria.'?><br>
+            <i class="bi bi-whatsapp fs-5 text-success"></i> <?= $empresa['whatsapp'] ?? '(14) 99999-9999' ?> | 
+            <i class="bi bi-envelope fs-5 text-primary"></i> <?= $empresa['email'] ?? 'contato@bikesystem.com.br'?>
         </div>
     </div>
 

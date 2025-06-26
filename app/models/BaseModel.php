@@ -54,9 +54,9 @@ class BaseModel {
             
             $sql = "INSERT INTO {$this->table} (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
             $stmt = $this->db->prepare($sql);
-            
+
             if ($stmt->execute(array_values($data))) {
-                return $this->db->lastInsertId();
+                return $data['id_pessoa'] ?? $data['id'] ?? $this->db->lastInsertId() ?? null;
             }
             return false;
         } catch (Exception $e) {
@@ -87,6 +87,9 @@ class BaseModel {
             
             return $stmt->execute($values);
         } catch (Exception $e) {
+            gravarLog("Erro ao atualizar registro: " . $e->getMessage());
+            gravarLog("Consulta: " . $sql);
+            gravarLog("Campos: " . json_encode($data));
             return false;
         }
     }

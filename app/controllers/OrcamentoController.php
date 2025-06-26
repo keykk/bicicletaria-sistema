@@ -170,7 +170,8 @@ class OrcamentoController extends BaseController {
         
         $data = [
             'title' => 'Imprimir Orçamento',
-            'orcamento' => $orcamento
+            'orcamento' => $orcamento,
+            'empresa' => $this->getSelectedEmpresa() ?? Config::getEmpresaInfo()
         ];
         
         $this->loadView('orcamentos/imprimir', $data);

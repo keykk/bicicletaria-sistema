@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 24/06/2025 às 08:30
+-- Tempo de geração: 26/06/2025 às 02:47
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -65,6 +65,28 @@ CREATE TABLE `atividades_usuarios` (
 INSERT INTO `atividades_usuarios` (`id`, `usuario_id`, `tipo`, `descricao`, `dados_extras`, `ip_address`, `user_agent`, `data_criacao`) VALUES
 (1, 1, 'login', 'Login realizado com sucesso', '{\"ip\": \"127.0.0.1\", \"navegador\": \"Sistema\"}', NULL, NULL, '2025-06-24 05:05:07'),
 (2, 1, 'perfil_atualizado', 'Perfil atualizado pelo usuário', '{\"campos_alterados\": [\"nome\", \"email\"]}', NULL, NULL, '2025-06-24 05:05:07');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `config_update`
+--
+
+CREATE TABLE `config_update` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(150) DEFAULT NULL,
+  `sql_num` int(11) DEFAULT NULL,
+  `sql_script` text DEFAULT NULL,
+  `dths_cadastro` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `config_update`
+--
+
+INSERT INTO `config_update` (`id`, `descricao`, `sql_num`, `sql_script`, `dths_cadastro`) VALUES
+(1, 'Criação da tabela pessoa', 1, 'CREATE TABLE pessoa (\n    id int not null auto_increment primary key,\n    nome varchar(150) not null,\n    nome_fantasia varchar(150),\n    tipo char(1) not null,\n    data_nascimento date,\n    cpf_cnpj varchar(20),\n    email varchar(150),\n    telefone varchar(20),\n    whatsapp varchar(20),\n    endereco varchar(255),\n    cidade varchar(150),\n    estado char(2),\n    cep varchar(10),\n    data_cadastro datetime not null default current_timestamp\n);', '2025-06-25 11:45:30'),
+(2, 'Criação da tabela pessoa_empresa', 2, 'CREATE table pessoa_empresa(\n    id_pessoa integer not null,\n    slogan varchar(255),\n    website varchar(255),\n    facebook varchar(255),\n    instagram varchar(255),\n    linkedin varchar(255),\n    twitter varchar(255),\n    youtube varchar(255),\n    caminho_logo varchar(255),\n    caminho_favicon varchar(255),\n    cor_primaria varchar(255),\n    cor_secundaria varchar(255),\n    inscricao_estadual varchar(255),\n    regime_tributario varchar(255),\n    nome_responsavel varchar(255),\n    constraint fk_pessoa_empresa foreign key (id_pessoa) references pessoa(id) on delete cascade,\n    constraint pk_pessoa_empresa primary key (id_pessoa)\n);', '2025-06-25 12:08:45');
 
 -- --------------------------------------------------------
 
@@ -174,6 +196,68 @@ CREATE TABLE `orcamentos` (
 
 INSERT INTO `orcamentos` (`id`, `cliente`, `telefone`, `email`, `data`, `valor_total`, `id_tabela_preco`) VALUES
 (25, 'Edson', '(14) 99685-4401', 'keykkashi@gmail.com', '2025-06-24 04:39:58', 3328.58, 25);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pessoa`
+--
+
+CREATE TABLE `pessoa` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(150) NOT NULL,
+  `nome_fantasia` varchar(150) DEFAULT NULL,
+  `tipo` char(1) NOT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  `cpf_cnpj` varchar(20) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `whatsapp` varchar(20) DEFAULT NULL,
+  `endereco` varchar(255) DEFAULT NULL,
+  `cidade` varchar(150) DEFAULT NULL,
+  `estado` char(2) DEFAULT NULL,
+  `cep` varchar(10) DEFAULT NULL,
+  `data_cadastro` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `pessoa`
+--
+
+INSERT INTO `pessoa` (`id`, `nome`, `nome_fantasia`, `tipo`, `data_nascimento`, `cpf_cnpj`, `email`, `telefone`, `whatsapp`, `endereco`, `cidade`, `estado`, `cep`, `data_cadastro`) VALUES
+(1, 'Empresa Teste', 'Teste 123', 'J', NULL, '06.990.590/0001-23', 'teste@teste.com', '(14) 99685-4401', '(14) 99694-3584', 'Rua 123', 'Bauru', 'sp', '17023024', '2025-06-25 15:06:31'),
+(2, 'Google', 'Google Teste', 'J', NULL, '12.323.313/1232-3121', 'teste@teste.com', '(12) 31231-23213', '(12) 31232-13213', 'dfdsf', 'Bauru', 'sp', '17023024', '2025-06-25 17:41:54');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pessoa_empresa`
+--
+
+CREATE TABLE `pessoa_empresa` (
+  `id_pessoa` int(11) NOT NULL,
+  `slogan` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
+  `linkedin` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
+  `youtube` varchar(255) DEFAULT NULL,
+  `caminho_logo` varchar(255) DEFAULT NULL,
+  `caminho_favicon` varchar(255) DEFAULT NULL,
+  `cor_primaria` varchar(255) DEFAULT NULL,
+  `cor_secundaria` varchar(255) DEFAULT NULL,
+  `inscricao_estadual` varchar(255) DEFAULT NULL,
+  `regime_tributario` varchar(255) DEFAULT NULL,
+  `nome_responsavel` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `pessoa_empresa`
+--
+
+INSERT INTO `pessoa_empresa` (`id_pessoa`, `slogan`, `website`, `facebook`, `instagram`, `linkedin`, `twitter`, `youtube`, `caminho_logo`, `caminho_favicon`, `cor_primaria`, `cor_secundaria`, `inscricao_estadual`, `regime_tributario`, `nome_responsavel`) VALUES
+(1, 'Sua melhor pedalada começa aqui!', '', 'https://www.facebook.com/', '', NULL, '', '', '', NULL, '#0d6efd', '#6c757d', '', 'mei', '');
 
 -- --------------------------------------------------------
 
@@ -302,6 +386,12 @@ ALTER TABLE `atividades_usuarios`
   ADD KEY `idx_tipo` (`tipo`);
 
 --
+-- Índices de tabela `config_update`
+--
+ALTER TABLE `config_update`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices de tabela `estoque`
 --
 ALTER TABLE `estoque`
@@ -337,6 +427,18 @@ ALTER TABLE `itens_venda`
 --
 ALTER TABLE `orcamentos`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `pessoa`
+--
+ALTER TABLE `pessoa`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `pessoa_empresa`
+--
+ALTER TABLE `pessoa_empresa`
+  ADD PRIMARY KEY (`id_pessoa`);
 
 --
 -- Índices de tabela `produtos`
@@ -388,6 +490,12 @@ ALTER TABLE `atividades_usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de tabela `config_update`
+--
+ALTER TABLE `config_update`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de tabela `estoque`
 --
 ALTER TABLE `estoque`
@@ -416,6 +524,12 @@ ALTER TABLE `itens_venda`
 --
 ALTER TABLE `orcamentos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de tabela `pessoa`
+--
+ALTER TABLE `pessoa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
@@ -489,6 +603,12 @@ ALTER TABLE `itens_tabela_preco`
 ALTER TABLE `itens_venda`
   ADD CONSTRAINT `itens_venda_ibfk_1` FOREIGN KEY (`id_venda`) REFERENCES `vendas` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `itens_venda_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `pessoa_empresa`
+--
+ALTER TABLE `pessoa_empresa`
+  ADD CONSTRAINT `fk_pessoa_empresa` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `vendas`

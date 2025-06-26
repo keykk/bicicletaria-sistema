@@ -28,7 +28,7 @@
     </script>
 </head>
 <body>
-    <?php if (isset($_SESSION['user_id'])): ?>
+    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['empresa_id'])): ?>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
@@ -88,11 +88,16 @@
                     </li>
                 </ul>
                 
+                <a href="<?php echo BASE_URL; ?>/empresa" class="nav-link text-white d-flex align-items-center ms-lg-auto">
+                    <i class="bi bi-building me-2"></i>
+                    <span><?= strtoupper($_SESSION['empresa_data']['nome'] ?? 'Empresa não encontrada !') ?></span>
+                </a>
+
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i>
-                            <?= $_SESSION['user_data']['nome_usuario'] ?? 'Usuário' ?>
+                            <?= ucwords($_SESSION['user_data']['nome_usuario'] ?? 'Usuário') ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item bi bi-sliders" href="<?php echo BASE_URL; ?>/configuracao"> Configurações</a></li>

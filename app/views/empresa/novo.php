@@ -5,7 +5,7 @@
                 <i class="bi bi-building"></i>
                 Configurações da Empresa
             </h1>
-            <a href="<?php echo BASE_URL; ?>/configuracao" class="btn btn-outline-secondary">
+            <a href="<?php echo BASE_URL; ?>/empresa" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i>
                 Voltar
             </a>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<form method="POST" action="<?php echo BASE_URL; ?>/configuracao/empresa" enctype="multipart/form-data">
+<form method="POST" action="<?php echo BASE_URL; ?>/empresa/novo" enctype="multipart/form-data">
     <div class="row">
         <!-- Informações Básicas -->
         <div class="col-md-8">
@@ -30,18 +30,18 @@
                         <div class="col-md-5 mb-3">
                             <label for="empresa_nome" class="form-label">Nome da Empresa *</label>
                             <input type="text" class="form-control" id="empresa_nome" name="empresa_nome" 
-                                value="<?= htmlspecialchars($empresa['nome'] ?? '') ?>" required>
+                                value="<?= htmlspecialchars($_POST['empresa_nome'] ?? '') ?>" required>
                             <!--<div class="form-text">Nome que aparecerá nos orçamentos e documentos</div>-->
                         </div>
                         <div class="col-md-5 mb-3">
                             <label for="empresa_nome_fantasia" class="form-label">Nome Fantasia *</label>
                             <input type="text" class="form-control" id="empresa_nome_fantasia" name="empresa_nome_fantasia" 
-                                value="<?= htmlspecialchars($empresa['nome_fantasia'] ?? '') ?>" required>
+                                value="<?= htmlspecialchars($_POST['empresa_nome_fantasia'] ?? '') ?>" required>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="empresa_cnpj" class="form-label">CNPJ</label>
                             <input type="text" class="form-control" id="empresa_cnpj" name="empresa_cnpj" 
-                                value="<?= htmlspecialchars($empresa['cnpj'] ?? '') ?>"
+                                value="<?= htmlspecialchars($_POST['empresa_cnpj'] ?? '') ?>"
                                 placeholder="00.000.000/0000-00">
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="mb-3">
                         <label for="empresa_slogan" class="form-label">Slogan</label>
                         <input type="text" class="form-control" id="empresa_slogan" name="empresa_slogan" 
-                               value="<?= htmlspecialchars($empresa['slogan'] ?? '') ?>"
+                               value="<?= htmlspecialchars($_POST['empresa_slogan'] ?? '') ?>"
                                placeholder="Sua melhor pedalada começa aqui!">
                         <div class="form-text">Frase que representa sua empresa</div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="mb-3">
                         <label for="empresa_endereco" class="form-label">Endereço Completo *</label>
                         <textarea class="form-control" id="empresa_endereco" name="empresa_endereco" 
-                                  rows="3" required><?= htmlspecialchars($empresa['endereco'] ?? '') ?></textarea>
+                                  rows="3" required><?= htmlspecialchars($_POST['empresa_endereco'] ?? '') ?></textarea>
                         <div class="form-text">Endereço completo com CEP, cidade e estado</div>
                     </div>
 
@@ -65,18 +65,18 @@
                         <div class="col-md-6 mb-3">
                             <label for="cidade" class="form-label">Cidade *</label>
                             <input type="text" class="form-control" id="cidade" name="cidade" 
-                                value="<?= htmlspecialchars($empresa['cidade'] ?? '') ?>" required>
+                                value="<?= htmlspecialchars($_POST['cidade'] ?? '') ?>" required>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="estado" class="form-label">Estado *</label>
                             <input type="text" class="form-control" id="estado" name="estado" 
-                                value="<?= htmlspecialchars($empresa['estado'] ?? '') ?>" 
+                                value="<?= htmlspecialchars($_POST['estado'] ?? '') ?>" 
                                 maxlength="2" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="cep" class="form-label">CEP</label>
                             <input type="number" class="form-control" id="cep" name="cep" 
-                                value="<?= htmlspecialchars($empresa['cep'] ?? '') ?>"
+                                value="<?= htmlspecialchars($_POST['cep'] ?? '') ?>"
                                 placeholder="00000-000">
                         </div>
                     </div>
@@ -96,13 +96,13 @@
                         <div class="col-md-6 mb-3">
                             <label for="empresa_telefone" class="form-label">Telefone Principal *</label>
                             <input type="tel" class="form-control" id="empresa_telefone" name="empresa_telefone" 
-                                   value="<?= htmlspecialchars($empresa['telefone'] ?? '') ?>" 
+                                   value="<?= htmlspecialchars($_POST['empresa_telefone'] ?? '') ?>" 
                                    placeholder="(11) 99999-9999" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="empresa_whatsapp" class="form-label">WhatsApp</label>
                             <input type="tel" class="form-control" id="empresa_whatsapp" name="empresa_whatsapp" 
-                                   value="<?= htmlspecialchars($empresa['whatsapp'] ?? '') ?>" 
+                                   value="<?= htmlspecialchars($_POST['empresa_whatsapp'] ?? '') ?>" 
                                    placeholder="(11) 99999-9999">
                         </div>
                     </div>
@@ -111,12 +111,12 @@
                         <div class="col-md-6 mb-3">
                             <label for="empresa_email" class="form-label">Email Principal *</label>
                             <input type="email" class="form-control" id="empresa_email" name="empresa_email" 
-                                   value="<?= htmlspecialchars($empresa['email'] ?? '') ?>" required>
+                                   value="<?= htmlspecialchars($_POST['empresa_email'] ?? '') ?>" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="empresa_website" class="form-label">Website</label>
                             <input type="url" class="form-control" id="empresa_website" name="empresa_website" 
-                                   value="<?= htmlspecialchars($empresa['website'] ?? '') ?>" 
+                                   value="<?= htmlspecialchars($_POST['empresa_website'] ?? '') ?>" 
                                    placeholder="https://www.minhabicicletaria.com.br">
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                 Facebook
                             </label>
                             <input type="url" class="form-control" id="empresa_facebook" name="empresa_facebook" 
-                                   value="<?= htmlspecialchars($empresa['facebook'] ?? '') ?>" 
+                                   value="<?= htmlspecialchars($_POST['empresa_facebook'] ?? '') ?>" 
                                    placeholder="https://facebook.com/minhabicicletaria">
                         </div>
                         <div class="col-md-6 mb-3">
@@ -148,7 +148,7 @@
                                 Instagram
                             </label>
                             <input type="url" class="form-control" id="empresa_instagram" name="empresa_instagram" 
-                                   value="<?= htmlspecialchars($empresa['instagram'] ?? '') ?>" 
+                                   value="<?= htmlspecialchars($_POST['empresa_instagram'] ?? '') ?>" 
                                    placeholder="https://instagram.com/minhabicicletaria">
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                                 YouTube
                             </label>
                             <input type="url" class="form-control" id="empresa_youtube" name="empresa_youtube" 
-                                value="<?= htmlspecialchars($empresa['youtube'] ?? '') ?>" 
+                                value="<?= htmlspecialchars($_POST['empresa_youtube'] ?? '') ?>" 
                                 placeholder="https://youtube.com/@minhabicicletaria">
                         </div>
                         <div class="col-md-6 mb-3">
@@ -169,7 +169,7 @@
                                 Twitter
                             </label>
                             <input type="url" class="form-control" id="empresa_twitter" name="empresa_twitter" 
-                                value="<?= htmlspecialchars($empresa['twitter'] ?? '') ?>" 
+                                value="<?= htmlspecialchars($POST['empresa_twitter'] ?? '') ?>" 
                                 placeholder="https://twitter.com/minhabicicletaria">
                         </div>
                     </div>
@@ -188,8 +188,8 @@
                 </div>
                 <div class="card-body text-center">
                     <div class="mb-3">
-                        <?php if (!empty($empresa['empresa_logo'])): ?>
-                            <img src="<?= htmlspecialchars($empresa['logo']) ?>" 
+                        <?php if (!empty($_POST['empresa_logo'])): ?>
+                            <img src="<?= htmlspecialchars($_POST['empresa_logo'] ?? '') ?>" 
                                  alt="Logo da Empresa" class="img-fluid" style="max-height: 150px;">
                         <?php else: ?>
                             <div class="bg-light border rounded p-4" style="height: 150px; display: flex; align-items: center; justify-content: center;">
@@ -207,13 +207,6 @@
                                accept="image/*">
                         <div class="form-text">Formatos: JPG, PNG, GIF (máx. 2MB)</div>
                     </div>
-                    
-                    <?php if (!empty($empresa['logo'])): ?>
-                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removerLogo()">
-                            <i class="bi bi-trash"></i>
-                            Remover Logo
-                        </button>
-                    <?php endif; ?>
                 </div>
             </div>
             
@@ -231,9 +224,9 @@
                         <div class="input-group">
                             <input type="color" class="form-control form-control-color" 
                                    id="empresa_cor_primaria" name="empresa_cor_primaria" 
-                                   value="<?= htmlspecialchars($empresa['cor_primaria'] ?? '#0d6efd') ?>">
+                                   value="<?= htmlspecialchars($_POST['empresa_cor_primaria'] ?? '#0d6efd') ?>">
                             <input type="text" class="form-control" 
-                                   value="<?= htmlspecialchars($empresa['cor_primaria'] ?? '#0d6efd') ?>"
+                                   value="<?= htmlspecialchars($_POST['empresa_cor_primaria'] ?? '#0d6efd') ?>"
                                    readonly>
                         </div>
                     </div>
@@ -243,9 +236,9 @@
                         <div class="input-group">
                             <input type="color" class="form-control form-control-color" 
                                    id="empresa_cor_secundaria" name="empresa_cor_secundaria" 
-                                   value="<?= htmlspecialchars($empresa['cor_secundaria'] ?? '#6c757d') ?>">
+                                   value="<?= htmlspecialchars($_POST['empresa_cor_secundaria'] ?? '#6c757d') ?>">
                             <input type="text" class="form-control" 
-                                   value="<?= htmlspecialchars($empresa['cor_secundaria'] ?? '#6c757d') ?>"
+                                   value="<?= htmlspecialchars($_POST['empresa_cor_secundaria'] ?? '#6c757d') ?>"
                                    readonly>
                         </div>
                     </div>
@@ -272,17 +265,17 @@
                         <label for="empresa_inscricao_estadual" class="form-label">Inscrição Estadual</label>
                         <input type="text" class="form-control" id="empresa_inscricao_estadual" 
                                name="empresa_inscricao_estadual" 
-                               value="<?= htmlspecialchars($empresa['inscricao_estadual'] ?? '') ?>">
+                               value="<?= htmlspecialchars($_POST['empresa_inscricao_estadual'] ?? '') ?>">
                     </div>
                     
                     <div class="mb-3">
                         <label for="empresa_regime_tributario" class="form-label">Regime Tributário</label>
                         <select class="form-select" id="empresa_regime_tributario" name="empresa_regime_tributario">
                             <option value="">Selecione</option>
-                            <option value="simples_nacional" <?= ($empresa['regime_tributario'] ?? '') === 'simples_nacional' ? 'selected' : '' ?>>Simples Nacional</option>
-                            <option value="lucro_presumido" <?= ($empresa['regime_tributario'] ?? '') === 'lucro_presumido' ? 'selected' : '' ?>>Lucro Presumido</option>
-                            <option value="lucro_real" <?= ($empresa['regime_tributario'] ?? '') === 'lucro_real' ? 'selected' : '' ?>>Lucro Real</option>
-                            <option value="mei" <?= ($empresa['regime_tributario'] ?? '') === 'mei' ? 'selected' : '' ?>>MEI</option>
+                            <option value="simples_nacional" <?= ($_POST['empresa_regime_tributario'] ?? '') === 'simples_nacional' ? 'selected' : '' ?>>Simples Nacional</option>
+                            <option value="lucro_presumido" <?= ($_POST['empresa_regime_tributario'] ?? '') === 'lucro_presumido' ? 'selected' : '' ?>>Lucro Presumido</option>
+                            <option value="lucro_real" <?= ($_POST['empresa_regime_tributario'] ?? '') === 'lucro_real' ? 'selected' : '' ?>>Lucro Real</option>
+                            <option value="mei" <?= ($_POST['empresa_regime_tributario'] ?? '') === 'mei' ? 'selected' : '' ?>>MEI</option>
                         </select>
                     </div>
                     
@@ -290,7 +283,7 @@
                         <label for="empresa_responsavel" class="form-label">Responsável</label>
                         <input type="text" class="form-control" id="empresa_responsavel" 
                                name="empresa_responsavel" 
-                               value="<?= htmlspecialchars($empresa['responsavel'] ?? '') ?>"
+                               value="<?= htmlspecialchars($_POST['empresa_responsavel'] ?? '') ?>"
                                placeholder="Nome do proprietário/responsável">
                     </div>
                 </div>
@@ -305,10 +298,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-outline-warning" onclick="previewOrcamento()">
-                                <i class="bi bi-eye"></i>
-                                Visualizar Orçamento
-                            </button>
+                            
                         </div>
                         <div>
                             <button type="button" class="btn btn-outline-secondary me-2" onclick="resetarFormulario()">
@@ -327,28 +317,6 @@
     </div>
 </form>
 
-<!-- Modal de Preview -->
-<div class="modal fade" id="previewModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="bi bi-eye"></i>
-                    Preview do Orçamento
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div id="previewContent" class="border p-3">
-                    <!-- Conteúdo do preview será carregado aqui -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 // Máscara para CNPJ
@@ -399,92 +367,6 @@ function resetarFormulario() {
     if (confirm('Deseja resetar todas as alterações não salvas?')) {
         location.reload();
     }
-}
-
-function removerLogo() {
-    if (confirm('Deseja remover a logo atual?')) {
-        fetch('<?php echo BASE_URL; ?>/configuracao/remover-logo', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erro ao remover logo: ' + data.message);
-            }
-        });
-    }
-}
-
-function previewOrcamento() {
-    // Coletar dados do formulário
-    const formData = new FormData(document.querySelector('form'));
-    const dados = {};
-    
-    for (let [key, value] of formData.entries()) {
-        dados[key] = value;
-    }
-    
-    // Gerar preview
-    const preview = `
-        <div style="font-family: Arial, sans-serif;">
-            <div style="text-align: center; border-bottom: 2px solid ${dados.empresa_cor_primaria || '#0d6efd'}; padding-bottom: 20px; margin-bottom: 20px;">
-                <h2 style="color: ${dados.empresa_cor_primaria || '#0d6efd'}; margin: 0;">
-                    🚲 ${dados.empresa_nome || 'Nome da Empresa'}
-                </h2>
-                <p style="margin: 5px 0; color: #666;">${dados.empresa_slogan || 'Slogan da empresa'}</p>
-                <p style="margin: 0; font-size: 14px; color: #666;">
-                    ${dados.empresa_endereco || 'Endereço da empresa'}<br>
-                    Tel: ${dados.empresa_telefone || '(11) 99999-9999'} | Email: ${dados.empresa_email || 'email@empresa.com'}
-                </p>
-            </div>
-            
-            <h3>ORÇAMENTO #001</h3>
-            <p><strong>Cliente:</strong> João da Silva</p>
-            <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-            
-            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background: ${dados.empresa_cor_primaria || '#0d6efd'}; color: white;">
-                        <th style="padding: 10px; text-align: left;">Item</th>
-                        <th style="padding: 10px; text-align: center;">Qtd</th>
-                        <th style="padding: 10px; text-align: right;">Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">Bicicleta Mountain Bike Aro 29</td>
-                        <td style="padding: 10px; text-align: center;">1</td>
-                        <td style="padding: 10px; text-align: right;">R$ 1.200,00</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">Capacete de Segurança</td>
-                        <td style="padding: 10px; text-align: center;">1</td>
-                        <td style="padding: 10px; text-align: right;">R$ 80,00</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr style="background: #f8f9fa; font-weight: bold;">
-                        <td colspan="2" style="padding: 10px; text-align: right;">TOTAL:</td>
-                        <td style="padding: 10px; text-align: right; color: ${dados.empresa_cor_primaria || '#0d6efd'};">R$ 1.280,00</td>
-                    </tr>
-                </tfoot>
-            </table>
-            
-            <div style="margin-top: 30px; font-size: 12px; color: #666;">
-                <p><strong>Observações:</strong></p>
-                <ul>
-                    <li>Orçamento válido por 30 dias</li>
-                    <li>Preços sujeitos a alteração</li>
-                    <li>Produtos sujeitos à disponibilidade</li>
-                </ul>
-            </div>
-        </div>
-    `;
-    
-    document.getElementById('previewContent').innerHTML = preview;
-    new bootstrap.Modal(document.getElementById('previewModal')).show();
 }
 
 // Validação do formulário
