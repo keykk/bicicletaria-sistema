@@ -132,6 +132,7 @@ class PessoaEmpresa extends BaseModel {
         }
 
         $pessoa_empresa_dados = [
+            'id_pessoa' => $id_pessoa['id'] ?? $id,
             'slogan' => $slogan,
             'website' => $site,
             'facebook' => $facebook,
@@ -147,7 +148,6 @@ class PessoaEmpresa extends BaseModel {
         ];
         
         $ver = $this->findById($id_pessoa['id'] ?? $id);
-        gravarLog("Dados da empresa: " . json_encode($ver));
         $retorno = [];
         if ($ver) {
             // Atualiza os dados da empresa
