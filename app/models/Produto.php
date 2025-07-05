@@ -117,5 +117,55 @@ class Produto extends BaseModel {
         
         return $errors;
     }
+
+    /**
+     * Buscar produtos para PDV (por código ou descrição)
+     * @param string $termo
+     * @param int $tabela
+     * @return array
+     */
+    public function buscarParaPDV($termo, $tabela) {
+        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda, e.quantidade as estoque_disponivel
+                FROM produtos p
+                INNER JOIN itens_tabela_preco pr on pr.id_produto = p.id
+                LEFT JOIN estoque e ON p.id = e.id_produto
+                WHERE ((p.id = ?) OR (p.nome LIKE ?)) 
+                AND     id_tabela = ?
+               
+                ORDER BY p.nome
+                LIMIT 20";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int)$termo,'%'.$termo.'%', $tabela]);
+            
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            gravarLog("Erro: " . $e->getMessage());
+        }
+    }
+
+        /**
+     * Buscar produtos para PDV (por código)
+     * @param int $termo
+     * @param int $tabela
+     * @return array
+     */
+    public function buscarParaPDVById($termo, $tabela) {
+        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda, e.quantidade as estoque_disponivel
+                FROM produtos p
+                INNER JOIN itens_tabela_preco pr on pr.id_produto = p.id
+                LEFT JOIN estoque e ON p.id = e.id_produto
+                WHERE p.id = ? 
+                AND     id_tabela = ?
+                ";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([(int)$termo, $tabela]);
+            
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            gravarLog("Erro: " . $e->getMessage());
+        }
+    }
 }
 

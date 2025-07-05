@@ -1,0 +1,44 @@
+[01:52:12] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:12] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:14] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:15] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:16] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:17] Erro: SQLSTATE[HY093]: Invalid parameter number
+[01:52:18] Erro: SQLSTATE[HY093]: Invalid parameter number
+[04:44:17] Chegou aqui
+[04:45:35] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[04:53:36] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[04:53:53] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[04:57:34] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:02:47] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:03:46] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:04:42] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:10:25] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:14:47] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'usuario_id' cannot be null
+[05:20:36] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:24:41] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:26:25] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:29:31] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:32:44] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:36:19] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:37:39] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:38:47] Array
+[05:38:47] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:39:20] 
+[05:39:20] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:39:40] 
+[05:39:40] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:40:51] 
+[05:40:51] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:43:12] 1
+[05:43:12] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:47:52] 1
+[05:47:52] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'produto_id' in 'where clause'
+[05:54:43] 1
+[05:57:31] 1
+[05:57:31] Erro: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'produto_id' cannot be null
+[05:59:52] 1
+[06:01:39] 1
+[06:02:30] 1
+[06:04:23] 1
+[06:12:56] 1
