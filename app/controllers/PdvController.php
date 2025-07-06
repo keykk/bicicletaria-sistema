@@ -365,6 +365,27 @@ class PdvController extends BaseController {
         
         $this->loadView('pdv/dashboard', $data);
     }
+
+    public function excluir($id){
+        $this->requireLogin();
+
+        $venda = new Venda();
+
+        $ver = $venda->findById($id);
+
+        if (!$ver) {
+            $_SESSION['errors'] = ['Erro ao excluir Pedido'];
+            $this->redirect('/pdv/vendas');
+        }
+
+        if ($venda->delete($id)) {
+            $this->redirect('/pdv/vendas');
+        } else {
+            $_SESSION['errors'] = ['Erro ao excluir Pedido'];
+            $this->redirect('/pdv/vendas');
+        }
+
+    }
 }
 ?>
 

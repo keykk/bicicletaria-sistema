@@ -196,7 +196,7 @@ class ProdutoController extends BaseController {
     public function api() {
         $this->requireLogin();
         
-        $search = $_GET['search'] ?? '';
+        $search = $_GET['search'] ?? $_GET['termo'] ?? '';
         
         if (!empty($search)) {
             $produtos = $this->produtoModel->searchByNome($search);
@@ -204,6 +204,16 @@ class ProdutoController extends BaseController {
             $produtos = $this->produtoModel->findAll();
         }
         
+        $this->json($produtos);
+    }
+
+    public function api2(){
+        $this->requireLogin();
+
+        $termo = $_GET['termo'] ?? '';
+        $pagina = $_GET['page'] ?? 1;
+        
+        $produtos = $this->produtoModel->buscaProdutosPaginacao($termo,$pagina);
         $this->json($produtos);
     }
 }

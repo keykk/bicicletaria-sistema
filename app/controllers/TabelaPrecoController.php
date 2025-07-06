@@ -164,7 +164,7 @@ class TabelaPrecoController extends BaseController {
         if ($this->itemTabelaPrecoModel->removeProduto($idTabela, $idProduto)) {
             $_SESSION['success'] = 'Produto removido da tabela com sucesso';
         } else {
-            $_SESSION['errors'] = ['Erro ao remover produto da tabela'];
+            $_SESSION['errors'] = ['Registro em uso.','Erro ao remover produto da tabela'];
         }
         
         $this->redirect("/tabelapreco/editar/$idTabela");

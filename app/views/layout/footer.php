@@ -21,17 +21,9 @@
         </div>
     </footer>
     <?php endif; ?>
-    <!-- jQuery -->
-    <script src="<?php echo PUBLIC_URL; ?>/js/jquery-3.7.1.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="<?php echo PUBLIC_URL; ?>/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
     
 
-    <!-- Depois o plugin jQuery Mask -->
-    <script src="<?php echo PUBLIC_URL; ?>/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
 
-    <!-- Custom JS -->
-    <script src="<?php echo PUBLIC_URL; ?>/js/app.js"></script>
     
     
     <!-- Page specific scripts -->

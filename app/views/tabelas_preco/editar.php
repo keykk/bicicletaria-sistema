@@ -33,6 +33,12 @@
                 <form method="POST" action="<?php echo BASE_URL; ?>/tabelapreco/adicionarproduto/<?= $tabela['id'] ?>">
                     <div class="mb-3">
                         <label for="id_produto" class="form-label">Produto *</label>
+                        <select class="form-select select2-ajax" id="id_produto" name="id_produto" required>
+                            <option value="">Digite para pesquisar...</option>
+                        </select>
+                    </div>
+                    <!--<div class="mb-3">
+                        <label for="id_produto" class="form-label">Produto *</label>
                         <select class="form-select" id="id_produto" name="id_produto" required>
                             <option value="">Selecione um produto</option>
                             <?php foreach ($produtos as $produto): ?>
@@ -43,7 +49,7 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
+                    </div>-->
                     
                     <div class="mb-3">
                         <label for="preco" class="form-label">Preço de Custo *</label>
@@ -246,11 +252,71 @@
 
 <script>
 checkJQuery(function($) { 
-    // Mostrar preço original quando selecionar produto
+    var produtosPrecos = {};
+    $('.select2-ajax').select2({
+        theme: 'bootstrap-5',
+        width: '100%',
+        minimumInputLength: 2,
+        ajax: {
+            url: '<?= BASE_URL ?>/produto/api2',
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                //console.log('Parâmetros enviados:', params);
+                return {
+                    termo: params.term,
+                    page: params.page || 1
+                };
+            },
+            processResults: function(data, params) {
+                //console.log('Resposta completa da API:', data);
+                params.page = params.page || 1;
+                return {
+                    //results: data.produtos,
+                    results: data.produtos.map(function(item) {
+                        produtosPrecos[item.id] = item['data-preco'] || item.data_preco;
+                        return {
+                            id: item.id,
+                            text: item.text || item.nome,
+                            // Garanta que o preço está sendo incluído
+                            'data-preco': item['data-preco'] || item.preco_venda || 5,
+                            'preco': item['data-preco'] || item.preco_venda || 5
+                        };
+                    }),
+                    pagination: {
+                        more: (params.page * 20) < data.total_count
+                    }
+                };
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Erro na requisição AJAX:', {
+                    status: textStatus,
+                    error: errorThrown,
+                    response: jqXHR.responseText
+                });
+                //alert('Erro ao carregar produtos. Verifique o console para detalhes.');
+            },
+            cache: true
+        },
+        placeholder: 'Digite o nome do produto...',
+        language: {
+            noResults: function() {
+                return "Nenhum produto encontrado";
+            },
+            searching: function() {
+                return "Pesquisando...";
+            }
+        }
+    });
+
+        // Mostrar preço original quando selecionar produto
     $('#id_produto').on('change', function() {
-        var selectedOption = $(this).find('option:selected');
-        var precoOriginal = selectedOption.data('preco');
+        var selectedOption = $(this).find(':selected');//$(this).find('option:selected');
         
+        var productId = $(this).val();
+        var preco = produtosPrecos[productId] || 0;
+
+        var precoOriginal = selectedOption.data('preco') || preco;
         if (precoOriginal) {
             $('#preco').val(precoOriginal);
             $('#preco-original span').text('R$ ' + parseFloat(precoOriginal).toLocaleString('pt-BR', {
@@ -258,6 +324,7 @@ checkJQuery(function($) {
                 maximumFractionDigits: 2
             }));
             $('#preco-original').show();
+            $('#porc').change();
         } else {
             $('#preco-original').hide();
         }
@@ -265,6 +332,7 @@ checkJQuery(function($) {
 
     // Atualizar preço de custo ao selecionar modelo de lucratividade
     $('#modelo_lucratividade, #porc').on('change keyup', function(event) {
+        
         var modelo = $('#modelo_lucratividade').val();
         var preco = parseFloat($('#preco').val()) || 0;
         var porc = parseFloat($('#porc').val()) || 0;
@@ -295,6 +363,7 @@ checkJQuery(function($) {
         }
         $('#porc').val(porc.toFixed(2));
     });
+
 });
 </script>
 

@@ -73,7 +73,7 @@ class Venda extends BaseModel {
         }
         
         // Buscar itens da venda
-        $sql = "SELECT iv.*, p.nome as produto_nome, p.id as produto_codigo
+        $sql = "SELECT iv.*, p.nome as produto_nome, p.id as produto_codigo, p.unidade_medida
                 FROM itens_venda iv
                 JOIN produtos p ON iv.produto_id = p.id
                 WHERE iv.venda_id = :venda_id

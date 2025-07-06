@@ -167,5 +167,65 @@ class Produto extends BaseModel {
             gravarLog("Erro: " . $e->getMessage());
         }
     }
+
+    /**
+     * Buscar produtos para PDV (por código ou descrição)
+     * @param string $termo
+     * @param string $pagina
+     * @return json
+     */
+    public function buscaProdutosPaginacao($termo, $pagina = 1){
+        try{
+        $limite = 20;
+        $pagina = max(1, (int)$pagina);
+        $offset = ($pagina- 1) * $limite;
+        
+
+        $sql = "SELECT id, nome, categoria, preco_venda 
+        FROM produtos 
+        WHERE nome LIKE :termo OR categoria LIKE :termo2
+        ORDER BY nome
+        LIMIT $limite OFFSET $offset";
+
+        
+        $stmt = $this->db->prepare($sql);
+
+        $termoBusca = '%' . $termo . '%';
+        $stmt->bindParam(':termo', $termoBusca);
+        $stmt->bindParam(':termo2', $termoBusca);
+        $stmt->execute();
+
+        $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Conta o total
+        $sqlCount = "SELECT COUNT(*) as total FROM produtos WHERE nome LIKE :termo OR categoria LIKE :termo2";
+        $stmtCount = $this->db->prepare($sqlCount);
+        $stmtCount->bindParam(':termo', $termoBusca);
+        $stmtCount->bindParam(':termo2', $termoBusca);
+        $stmtCount->execute();
+        $total = $stmtCount->fetchColumn();
+
+        // Formata a resposta
+        $response = [
+            'produtos' => [],
+            'total_count' => $total
+        ];
+
+        foreach ($produtos as $produto) {
+            $response['produtos'][] = [
+                'id' => $produto['id'] ?? '',
+                'text' => $produto['nome'] . ' (' . $produto['categoria'] . ')' ?? '',
+                'data-preco' => $produto['preco_venda'] ?? 0,
+                'data_preco' => $produto['preco_venda'] ?? 0
+            ];
+        }
+
+        return $response;
+    } catch (Exception $e) {
+            
+            gravarLog("Erro: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 

@@ -10,6 +10,25 @@
     <link href="<?php echo PUBLIC_URL; ?>/bootstrap-5.3.7-dist/icons-1.13.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?php echo PUBLIC_URL; ?>/css/style.css" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="<?= PUBLIC_URL ?>/select2-4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="<?= PUBLIC_URL ?>/select2-bootstrap-5-theme-master/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+
+
+    <!-- jQuery -->
+    <script src="<?php echo PUBLIC_URL; ?>/js/jquery-3.7.1.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="<?php echo PUBLIC_URL; ?>/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+    
+
+    <!-- Depois o plugin jQuery Mask -->
+    <script src="<?php echo PUBLIC_URL; ?>/jQuery-Mask-Plugin-master/dist/jquery.mask.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="<?= PUBLIC_URL ?>/select2-4.0.13/dist/js/select2.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="<?php echo PUBLIC_URL; ?>/js/app.js"></script>
 
     <script>
 
