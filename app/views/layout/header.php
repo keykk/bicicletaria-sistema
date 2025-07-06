@@ -79,11 +79,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-file-text"></i> Orçamentos
+                            <i class="bi bi-file-text"></i> Ponto de Venda
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/orcamento">Listar Orçamentos</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/orcamento/novo">Novo Orçamento</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/pdv">PDV</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/pdv/vendas">Vendas</a></li>
                         </ul>
                     </li>
                 </ul>
