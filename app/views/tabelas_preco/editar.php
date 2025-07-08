@@ -256,7 +256,7 @@ checkJQuery(function($) {
     $('.select2-ajax').select2({
         theme: 'bootstrap-5',
         width: '100%',
-        minimumInputLength: 2,
+        minimumInputLength: 1,
         ajax: {
             url: '<?= BASE_URL ?>/produto/api2',
             dataType: 'json',
