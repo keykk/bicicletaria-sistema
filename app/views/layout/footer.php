@@ -21,7 +21,67 @@
         </div>
     </footer>
     <?php endif; ?>
-    
+    <script>
+        checkJQuery(function($) {
+        var produtosPrecos = {};
+                $('.select2-ajax').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                minimumInputLength: 1,
+                ajax: {
+                    url: '<?= BASE_URL ?>/produto/api2',
+                    dataType: 'json',
+                    delay: 300,
+                    data: function(params) {
+                        //console.log('Parâmetros enviados:', params);
+                        return {
+                            termo: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data, params) {
+                        //console.log('Resposta completa da API:', data);
+                        params.page = params.page || 1;
+                        return {
+                            //results: data.produtos,
+                            results: data.produtos.map(function(item) {
+                                produtosPrecos[item.id] = item['data-preco'] || item.data_preco;
+                                return {
+                                    id: item.id,
+                                    text: item.text || item.nome,
+                                    // Garanta que o preço está sendo incluído
+                                    'data-preco': item['data-preco'] || item.preco_venda || 5,
+                                    'preco': item['data-preco'] || item.preco_venda || 5
+                                };
+                            }),
+                            pagination: {
+                                more: (params.page * 20) < data.total_count
+                            }
+                        };
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Erro na requisição AJAX:', {
+                            status: textStatus,
+                            error: errorThrown,
+                            response: jqXHR.responseText
+                        });
+                        //alert('Erro ao carregar produtos. Verifique o console para detalhes.');
+                    },
+                    cache: true
+                },
+                placeholder: 'Digite o nome do produto...',
+                language: {
+                    noResults: function() {
+                        return "Nenhum produto encontrado";
+                    },
+                    searching: function() {
+                        return "Pesquisando...";
+                    }
+                }
+            });
+
+        });
+    </script>
 
 
     

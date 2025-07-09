@@ -34,7 +34,10 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="id_produto" class="form-label">Produto *</label>
-                            <select class="form-select" id="id_produto" name="id_produto" required>
+                            <select class="form-select select2-ajax" id="id_produto" name="id_produto" required>
+                                <option value="">Digite para pesquisar...</option>
+                            </select>
+                            <!--<select class="form-select" id="id_produto" name="id_produto" required>
                                 <option value="">Selecione um produto</option>
                                 <?php foreach ($produtos as $produto): ?>
                                     <option value="<?= $produto['id'] ?>" 
@@ -44,7 +47,7 @@
                                         (<?= htmlspecialchars($produto['categoria']) ?>)
                                     </option>
                                 <?php endforeach; ?>
-                            </select>
+                            </select>-->
                         </div>
                         
                         <div class="col-md-6 mb-3">
@@ -115,11 +118,12 @@
 
 // Usa a função para executar seu código
 checkJQuery(function($) {
+
         $('#id_produto').on('change', function() {
             var produtoId = $(this).val();
             var selectedOption = $(this).find('option:selected');
             var unidade = selectedOption.data('unidade') || 'unidade(s)';
-            var preco = selectedOption.data('preco') || 0;
+            var preco = selectedOption.data('preco') || produtosPrecos[produtoId] || 0;
             
             
             $('#unidade-display').text(unidade);
