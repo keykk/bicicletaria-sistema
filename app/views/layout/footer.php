@@ -23,7 +23,7 @@
     <?php endif; ?>
     <script>
         checkJQuery(function($) {
-        var produtosPrecos = {};
+        
                 $('.select2-ajax').select2({
                 theme: 'bootstrap-5',
                 width: '100%',
