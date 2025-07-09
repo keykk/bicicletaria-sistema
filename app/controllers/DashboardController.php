@@ -17,8 +17,8 @@ class DashboardController extends BaseController {
             'title' => 'Dashboard - Sistema de Gestão',
             'total_produtos' => $this->getTotalProdutos(),
             'produtos_estoque_baixo' => $this->getProdutosEstoqueBaixo(),
-            'total_orcamentos_mes' => $this->getTotalOrcamentosMes(),
-            'valor_total_orcamentos_mes' => $this->getValorTotalOrcamentosMes()
+            'total_vendas_mes' => $this->getTotalVendasMes(),
+            'valor_total_vendas_mes' => $this->getValorTotalVendasMes()
         ];
         
         $this->loadView('dashboard/index', $data);
@@ -36,11 +36,13 @@ class DashboardController extends BaseController {
     
     private function getProdutosEstoqueBaixo() {
         try {
-            $stmt = $this->db->query("
+            $stmt = $this->db->prepare("
                 SELECT COUNT(*) as total 
                 FROM estoque 
                 WHERE quantidade <= 5
+                AND empresa_id = ?
             ");
+            $stmt->execute([$_SESSION['empresa_id']]);
             $result = $stmt->fetch();
             return $result['total'];
         } catch (Exception $e) {
@@ -48,14 +50,16 @@ class DashboardController extends BaseController {
         }
     }
     
-    private function getTotalOrcamentosMes() {
+    private function getTotalVendasMes() {
         try {
-            $stmt = $this->db->query("
+            $stmt = $this->db->prepare("
                 SELECT COUNT(*) as total 
-                FROM orcamentos 
-                WHERE MONTH(data) = MONTH(CURRENT_DATE()) 
-                AND YEAR(data) = YEAR(CURRENT_DATE())
+                FROM vendas 
+                WHERE MONTH(data_venda) = MONTH(CURRENT_DATE()) 
+                AND YEAR(data_venda) = YEAR(CURRENT_DATE())
+                AND empresa_id = ?
             ");
+            $stmt->execute([$_SESSION['empresa_id']]);
             $result = $stmt->fetch();
             return $result['total'];
         } catch (Exception $e) {
@@ -63,14 +67,16 @@ class DashboardController extends BaseController {
         }
     }
     
-    private function getValorTotalOrcamentosMes() {
+    private function getValorTotalVendasMes() {
         try {
-            $stmt = $this->db->query("
-                SELECT SUM(valor_total) as total 
-                FROM orcamentos 
-                WHERE MONTH(data) = MONTH(CURRENT_DATE()) 
-                AND YEAR(data) = YEAR(CURRENT_DATE())
+            $stmt = $this->db->prepare("
+                SELECT SUM(total) as total 
+                FROM vendas 
+                WHERE MONTH(data_venda) = MONTH(CURRENT_DATE()) 
+                AND YEAR(data_venda) = YEAR(CURRENT_DATE())
+                AND empresa_id = ?
             ");
+            $stmt->execute([$_SESSION['empresa_id']]);
             $result = $stmt->fetch();
             return $result['total'] ?? 0;
         } catch (Exception $e) {

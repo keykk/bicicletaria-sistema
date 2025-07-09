@@ -47,8 +47,8 @@
         <div class="dashboard-card success">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1">
-                    <div class="card-value"><?= number_format($total_orcamentos_mes) ?></div>
-                    <div class="card-label">Orçamentos (Mês)</div>
+                    <div class="card-value"><?= number_format($total_vendas_mes) ?></div>
+                    <div class="card-label">Vendas (Mês)</div>
                 </div>
                 <div class="card-icon">
                     <i class="bi bi-file-text"></i>
@@ -61,7 +61,7 @@
         <div class="dashboard-card danger">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1">
-                    <div class="card-value">R$ <?= number_format($valor_total_orcamentos_mes, 2, ',', '.') ?></div>
+                    <div class="card-value">R$ <?= number_format($valor_total_vendas_mes, 2, ',', '.') ?></div>
                     <div class="card-label">Valor Total (Mês)</div>
                 </div>
                 <div class="card-icon">
@@ -189,9 +189,9 @@
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <a href="<?php echo BASE_URL; ?>/orcamento" class="btn btn-link p-0">
+                        <a href="<?php echo BASE_URL; ?>/pdv/vendas" class="btn btn-link p-0">
                             <i class="bi bi-file-text"></i>
-                            Listar Orçamentos
+                            Listar Vendas
                         </a>
                     </div>
                     <div class="col-md-3 mb-2">

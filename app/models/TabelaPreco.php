@@ -55,7 +55,7 @@ class TabelaPreco extends BaseModel {
      */
     public function findWithItens($id) {
         try {
-            $tabela = $this->findById($id);
+            $tabela = $this->findById($id, $_SESSION['empresa_id']);
             if (!$tabela) {
                 return null;
             }
@@ -97,7 +97,8 @@ class TabelaPreco extends BaseModel {
             
             // Criar nova tabela
             $dadosNovaTabela = [
-                'nome' => $novoNome
+                'nome' => $novoNome,
+                'empresa_id' => $_SESSION['empresa_id']
             ];
             $itens = $tabelaOrigem['itens'];
             

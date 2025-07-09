@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orçamento #<?= $orcamento['id'] ?> - BikeSystem</title>
+    <title>Venda #<?= $venda['id'] ?> - BikeSystem</title>
     <style>
         @media print {
             body { margin: 0; }
@@ -168,7 +168,8 @@
     <div class="header">
         <div class="logo">🚲 <?= strtoupper($empresa['nome'] ?? 'BikeSystem'); ?></div>
         <div class="company-info">
-            <?= $empresa['slogan'] ?? 'Sistema de Gestão de Bicicletaria.'?><br>
+            <?= $empresa['endereco'] ?><br/>
+            <?= $empresa['cidade'] . ' - ' . $empresa['estado'] . ' | CEP: ' . $empresa['cep'] ?><br/>
             <i class="bi bi-whatsapp fs-5 text-success"></i> <?= $empresa['whatsapp'] ?? '(14) 99999-9999' ?> | 
             <i class="bi bi-envelope fs-5 text-primary"></i> <?= $empresa['email'] ?? 'contato@bikesystem.com.br'?>
         </div>
@@ -177,52 +178,48 @@
     <!-- Informações do orçamento -->
     <div class="orcamento-info">
         <div class="cliente-info">
-            <div class="section-title">Dados do Cliente</div>
+            <div class="section-title">Dados do Vendedor</div>
             <table class="info-table">
                 <tr>
                     <td class="label">Nome:</td>
-                    <td><?= htmlspecialchars($orcamento['cliente']) ?></td>
+                    <td><?= htmlspecialchars($venda['vendedor_nome']) ?></td>
                 </tr>
-                <?php if (!empty($orcamento['telefone'])): ?>
+                <?php if (!empty($venda['telefone'])): ?>
                 <tr>
                     <td class="label">Telefone:</td>
-                    <td><?= htmlspecialchars($orcamento['telefone']) ?></td>
+                    <td><?= htmlspecialchars($venda['telefone']) ?></td>
                 </tr>
                 <?php endif; ?>
-                <?php if (!empty($orcamento['email'])): ?>
+                <?php if (!empty($venda['email'])): ?>
                 <tr>
                     <td class="label">Email:</td>
-                    <td><?= htmlspecialchars($orcamento['email']) ?></td>
+                    <td><?= htmlspecialchars($venda['email']) ?></td>
                 </tr>
                 <?php endif; ?>
             </table>
         </div>
         
         <div class="orcamento-details">
-            <div class="section-title">Detalhes do Orçamento</div>
+            <div class="section-title">Detalhes</div>
             <table class="info-table">
                 <tr>
                     <td class="label">Número:</td>
-                    <td><strong>#<?= $orcamento['id'] ?></strong></td>
+                    <td><strong>#<?= $venda['id'] ?></strong></td>
                 </tr>
                 <tr>
                     <td class="label">Data:</td>
-                    <td><?= date('d/m/Y', strtotime($orcamento['data'])) ?></td>
+                    <td><?= date('d/m/Y', strtotime($venda['data_venda'])) ?></td>
                 </tr>
                 <tr>
                     <td class="label">Hora:</td>
-                    <td><?= date('H:i', strtotime($orcamento['data'])) ?></td>
-                </tr>
-                <tr>
-                    <td class="label">Validade:</td>
-                    <td><?= date('d/m/Y', strtotime($orcamento['data'] . ' +30 days')) ?></td>
+                    <td><?= date('H:i', strtotime($venda['data_venda'])) ?></td>
                 </tr>
             </table>
         </div>
     </div>
 
     <!-- Itens do orçamento -->
-    <div class="section-title">Itens do Orçamento</div>
+    <div class="section-title">Itens</div>
     <table class="items-table">
         <thead>
             <tr>
@@ -234,7 +231,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($orcamento['itens'] as $index => $item): ?>
+            <?php foreach ($venda['itens'] as $index => $item): ?>
                 <tr>
                     <td class="text-center"><?= $index + 1 ?></td>
                     <td>
@@ -244,7 +241,7 @@
                         <?= $item['quantidade'] ?> <?= htmlspecialchars($item['unidade_medida']) ?>
                     </td>
                     <td class="text-right">
-                        R$ <?= number_format($item['preco'], 2, ',', '.') ?>
+                        R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?>
                     </td>
                     <td class="text-right">
                         <strong>R$ <?= number_format($item['subtotal'], 2, ',', '.') ?></strong>
@@ -258,24 +255,12 @@
     <div class="total-section">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <strong>Total de Itens: <?= count($orcamento['itens']) ?></strong>
+                <strong>Total de Itens: <?= count($venda['itens']) ?></strong>
             </div>
             <div class="total-value">
-                TOTAL: R$ <?= number_format($orcamento['valor_total'], 2, ',', '.') ?>
+                TOTAL: R$ <?= number_format($venda['total'], 2, ',', '.') ?>
             </div>
         </div>
-    </div>
-
-    <!-- Termos e condições -->
-    <div class="terms">
-        <h4>Termos e Condições:</h4>
-        <ul>
-            <li>Este orçamento tem validade de 30 dias a partir da data de emissão</li>
-            <li>Os preços estão sujeitos a alterações sem aviso prévio</li>
-            <li>Para confirmar o pedido, entre em contato conosco</li>
-            <li>Produtos sujeitos à disponibilidade em estoque</li>
-            <li>Garantia conforme especificação do fabricante</li>
-        </ul>
     </div>
 
     <!-- Rodapé -->
@@ -283,7 +268,7 @@
         <div style="text-align: center;">
             <strong>Obrigado pela preferência!</strong><br>
             BikeSystem - Sistema de Gestão de Bicicletaria<br>
-            Orçamento gerado em <?= date('d/m/Y H:i') ?>
+            Data da impressão <?= date('d/m/Y H:i') ?>
         </div>
     </div>
 

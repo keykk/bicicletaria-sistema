@@ -39,6 +39,8 @@ class Venda extends BaseModel {
             $sql .= " AND v.cliente_nome LIKE :cliente";
             $params[':cliente'] = '%' . $filtros['cliente'] . '%';
         }
+        $sql .= " AND empresa_id = :empresaid";
+        $params[':empresaid'] = $_SESSION['empresa_id'];
         
         $sql .= " ORDER BY v.data_venda DESC";
         
@@ -62,10 +64,11 @@ class Venda extends BaseModel {
         $sql = "SELECT v.*, u.nome as vendedor_nome 
                 FROM {$this->table} v
                 LEFT JOIN usuarios u ON v.usuario_id = u.id
-                WHERE v.id = :id";
+                WHERE v.id = :id
+                AND empresa_id = :empresaid";
         
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $id]);
+        $stmt->execute([':id' => $id, ':empresaid' => $_SESSION['empresa_id']]);
         $venda = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!$venda) {
@@ -104,6 +107,9 @@ class Venda extends BaseModel {
             $where .= " AND DATE(data_venda) <= :data_fim";
             $params[':data_fim'] = $filtros['data_fim'];
         }
+
+        $where .= " AND empresa_id = :empresaid";
+        $params[':empresaid'] = $_SESSION['empresa_id'];
         
         $sql = "SELECT 
                     COUNT(*) as total_vendas,
@@ -139,7 +145,8 @@ class Venda extends BaseModel {
             $where .= " AND DATE(v.data_venda) <= :data_fim";
             $params[':data_fim'] = $filtros['data_fim'];
         }
-        
+        $where .= " AND empresa_id = :empresaid";
+        $params[':empresaid'] = $_SESSION['empresa_id'];
         $sql = "SELECT 
                     p.id, p.nome, p.codigo,
                     SUM(iv.quantidade) as quantidade_vendida,
@@ -166,17 +173,28 @@ class Venda extends BaseModel {
      * @return bool
      */
     public function cancelar($id, $motivo = '') {
+        $vendas = $this->findById($id, $_SESSION['empresa_id']);
+
         $sql = "UPDATE {$this->table} 
                 SET status = 'cancelada', 
                     motivo_cancelamento = :motivo,
                     data_cancelamento = NOW()
-                WHERE id = :id";
+                WHERE id = :id
+                AND empresa_id = :empresaid";
         
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $retorno = $stmt->execute([
             ':id' => $id,
-            ':motivo' => $motivo
+            ':motivo' => $motivo,
+            ':empresaid' => $_SESSION['empresa_id']
         ]);
+
+        if ($vendas['status'] !== 'cancelada'){
+            $this->atualizarEstoque($id);
+        }
+        
+        return $retorno;
+
     }
     
     /**
@@ -190,18 +208,23 @@ class Venda extends BaseModel {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':venda_id' => $venda_id]);
         $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $venda = $this->findById($venda_id, $_SESSION['empresa_id']);
         
+        $operador = $venda['status'] == 'cancelada' ? '+' : '-';
         // Atualizar estoque de cada produto
         foreach ($itens as $item) {
             $sql = "UPDATE estoque 
-                    SET quantidade = quantidade - :quantidade,
+                    SET quantidade = quantidade $operador :quantidade,
                         data_atualizacao = NOW()
-                    WHERE id_produto = :produto_id";
+                    WHERE id_produto = :produto_id
+                    AND empresa_id = :empresaid";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ':quantidade' => $item['quantidade'],
-                ':produto_id' => $item['produto_id']
+                ':produto_id' => $item['produto_id'],
+                ':empresaid' => $_SESSION['empresa_id']
             ]);
         }
         
@@ -218,10 +241,11 @@ class Venda extends BaseModel {
                 LEFT JOIN usuarios u ON v.usuario_id = u.id
                 WHERE DATE(v.data_venda) = CURDATE()
                 AND v.status != 'cancelada'
+                AND v.empresa_id = ?
                 ORDER BY v.data_venda DESC";
         
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$_SESSION['empresa_id']]);
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -246,10 +270,11 @@ class Venda extends BaseModel {
                     SUM(total) as valor_total,
                     AVG(total) as ticket_medio
                 FROM {$this->table} 
-                WHERE {$where} AND status != 'cancelada'";
+                WHERE {$where} AND status != 'cancelada'
+                AND empresa_id = ?";
         
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([$_SESSION['empresa_id']]);
         
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

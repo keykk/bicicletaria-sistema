@@ -207,13 +207,13 @@ class ProdutoController extends BaseController {
         $this->json($produtos);
     }
 
-    public function api2(){
+    public function api2($ocultaCategoria=0){
         $this->requireLogin();
 
         $termo = $_GET['termo'] ?? '';
         $pagina = $_GET['page'] ?? 1;
         
-        $produtos = $this->produtoModel->buscaProdutosPaginacao($termo,$pagina);
+        $produtos = $this->produtoModel->buscaProdutosPaginacao($termo,$pagina,$ocultaCategoria);
         $this->json($produtos);
     }
 }

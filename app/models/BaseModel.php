@@ -18,9 +18,13 @@ class BaseModel {
      * Busca todos os registros
      * @return array
      */
-    public function findAll() {
+    public function findAll($empresa=0) {
         try {
-            $stmt = $this->db->query("SELECT * FROM {$this->table}");
+            if($empresa > 0)
+                $sql = "SELECT * FROM {$this->table} WHERE empresa_id = ".$empresa;
+            else
+                $sql = "SELECT * FROM {$this->table}";
+            $stmt = $this->db->query($sql);
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return [];
@@ -32,9 +36,13 @@ class BaseModel {
      * @param int $id
      * @return array|null
      */
-    public function findById($id) {
+    public function findById($id, $empresa=0) {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = ?");
+            if ($empresa > 0)
+                $sql="SELECT * FROM {$this->table} WHERE id = ? AND empresa_id = ".$empresa;
+            else
+                $sql="SELECT * FROM {$this->table} WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
             $stmt->execute([$id]);
             return $stmt->fetch();
         } catch (Exception $e) {

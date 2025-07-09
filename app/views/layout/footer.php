@@ -29,7 +29,7 @@
                 width: '100%',
                 minimumInputLength: 1,
                 ajax: {
-                    url: '<?= BASE_URL ?>/produto/api2',
+                    url: '<?= BASE_URL.($url_api_produto ?? '/produto/api2/1') ?>',
                     dataType: 'json',
                     delay: 300,
                     data: function(params) {

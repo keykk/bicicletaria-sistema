@@ -80,7 +80,6 @@ if (empty($path)) {
 
 // Separar controlador e ação
 $segments = explode('/', $path);
-
 //Correção para Linux 
 if (strtoupper($segments[0]) == 'TABELAPRECO'){
     $segments[0] = 'TabelaPreco';

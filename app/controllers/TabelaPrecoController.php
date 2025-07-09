@@ -24,7 +24,7 @@ class TabelaPrecoController extends BaseController {
     public function index() {
         $this->requireLogin();
         
-        $tabelas = $this->tabelaPrecoModel->findAll();
+        $tabelas = $this->tabelaPrecoModel->findAll($_SESSION['empresa_id']);
         
         $data = [
             'title' => 'Tabelas de Preço',
@@ -61,7 +61,8 @@ class TabelaPrecoController extends BaseController {
         }
         
         $data = [
-            'nome' => $_POST['nome'] ?? ''
+            'nome' => $_POST['nome'] ?? '',
+            'empresa_id' => $_SESSION['empresa_id']
         ];
         
         $errors = $this->tabelaPrecoModel->validate($data);
@@ -112,7 +113,8 @@ class TabelaPrecoController extends BaseController {
             'produtos' => $produtos,
             'modelo_lucratividade' => $modelo_lucratividade,
             'errors' => $_SESSION['errors'] ?? [],
-            'success' => $_SESSION['success'] ?? null
+            'success' => $_SESSION['success'] ?? null,
+            'url_api_produto' => '/produto/api2'
         ];
         
         unset($_SESSION['errors'], $_SESSION['success']);
@@ -176,7 +178,7 @@ class TabelaPrecoController extends BaseController {
     public function copiar($id) {
         $this->requireLogin();
         
-        $tabela = $this->tabelaPrecoModel->findById($id);
+        $tabela = $this->tabelaPrecoModel->findById($id, $_SESSION['empresa_id']);
         
         if (!$tabela) {
             $this->redirect('/tabelapreco');

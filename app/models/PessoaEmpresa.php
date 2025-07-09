@@ -14,7 +14,7 @@ class PessoaEmpresa extends BaseModel {
      * @param int $id
      * @return array|null
      */
-    public function findById($id) {
+    public function findById($id, $empresa=0) {
         try {
             $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id_pessoa = ?");
             $stmt->execute([$id]);

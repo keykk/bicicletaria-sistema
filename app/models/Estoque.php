@@ -16,8 +16,8 @@ class Estoque extends BaseModel {
      */
     public function findByProduto($idProduto) {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id_produto = ?");
-            $stmt->execute([$idProduto]);
+            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id_produto = ? AND empresa_id = ?");
+            $stmt->execute([$idProduto, $_SESSION['empresa_id']]);
             return $stmt->fetch();
         } catch (Exception $e) {
             return null;
@@ -37,13 +37,14 @@ class Estoque extends BaseModel {
             
             if ($estoque) {
                 // Atualiza o registro existente
-                $stmt = $this->db->prepare("UPDATE {$this->table} SET quantidade = ? WHERE id_produto = ?");
-                return $stmt->execute([$quantidade, $idProduto]);
+                $stmt = $this->db->prepare("UPDATE {$this->table} SET quantidade = ? WHERE id_produto = ? AND empresa_id = ?");
+                return $stmt->execute([$quantidade, $idProduto, $_SESSION['empresa_id']]);
             } else {
                 // Cria um novo registro
                 return $this->insert([
                     'id_produto' => $idProduto,
-                    'quantidade' => $quantidade
+                    'quantidade' => $quantidade,
+                    'empresa_id' => $_SESSION['empresa_id']
                 ]);
             }
         } catch (Exception $e) {
@@ -113,13 +114,16 @@ class Estoque extends BaseModel {
         try {
             $sql = "
                 SELECT e.*, p.nome, p.categoria 
-                FROM {$this->table} e 
-                INNER JOIN produtos p ON e.id_produto = p.id 
+                FROM produtos p 
+                LEFT JOIN {$this->table} e ON e.id_produto = p.id 
+                    and e.empresa_id = ?
                 WHERE e.quantidade <= ?
+                 and p.categoria <> 'Serviços'
+                 
                 ORDER BY e.quantidade ASC
             ";
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$limite]);
+            $stmt->execute([$_SESSION['empresa_id'], $limite]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return [];
@@ -142,9 +146,13 @@ class Estoque extends BaseModel {
                     (COALESCE(e.quantidade, 0) * p.preco_venda) as valor_total_estoque
                 FROM produtos p 
                 LEFT JOIN {$this->table} e ON p.id = e.id_produto
+                    and e.empresa_id = ?
+
+                WHERE p.categoria <> 'Serviços'
                 ORDER BY p.categoria, p.nome
             ";
-            $stmt = $this->db->query($sql);
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$_SESSION['empresa_id']]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return [];

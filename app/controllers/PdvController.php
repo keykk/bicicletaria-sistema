@@ -17,7 +17,7 @@ class PdvController extends BaseController {
      */
     public function index() {
         $tabela = new TabelaPreco();
-        $tabela_preco = $tabela->findAll();
+        $tabela_preco = $tabela->findAll($_SESSION['empresa_id']);
         $data = [
             'title' => 'Ponto de Venda (PDV)',
             'active_menu' => 'pdv',
@@ -205,8 +205,8 @@ class PdvController extends BaseController {
      */
     public function vendas() {
         $filtros = [
-            'data_inicio' => $_GET['data_inicio'] ?? date('Y-m-d'),
-            'data_fim' => $_GET['data_fim'] ?? date('Y-m-d'),
+            'data_inicio' => $_GET['data_inicio'] ?? date('Y-m-01'),
+            'data_fim' => $_GET['data_fim'] ?? date('Y-m-t'),
             'forma_pagamento' => $_GET['forma_pagamento'] ?? '',
             'cliente' => $_GET['cliente'] ?? ''
         ];
@@ -258,6 +258,7 @@ class PdvController extends BaseController {
      * Imprimir cupom da venda
      */
     public function cupom($id = null) {
+        $this->requireLogin();
         if (!$id) {
             die('Venda não encontrada');
         }
@@ -274,6 +275,25 @@ class PdvController extends BaseController {
         ];
         
         $this->loadView('pdv/cupom', $data);
+    }
+
+    public function imprimir($id) {
+        $this->requireLogin();
+        
+        $venda = new Venda();
+        $vendaData = $venda->buscarComItens($id);
+        
+        if (!$vendaData) {
+            die('Venda não encontrada');
+        }
+        
+        $data = [
+            'title' => 'Imprimir Orçamento',
+            'venda' => $vendaData,
+            'empresa' => $this->getSelectedEmpresa() ?? Config::getEmpresaInfo()
+        ];
+        
+        $this->loadView('pdv/imprimir', $data);
     }
     
     /**
@@ -377,7 +397,7 @@ class PdvController extends BaseController {
             $_SESSION['errors'] = ['Erro ao excluir Pedido'];
             $this->redirect('/pdv/vendas');
         }
-
+        $venda->cancelar($id, 'Pedido Excluido');
         if ($venda->delete($id)) {
             $this->redirect('/pdv/vendas');
         } else {

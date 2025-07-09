@@ -34,8 +34,10 @@ class Produto extends BaseModel {
                 SELECT p.*, e.quantidade 
                 FROM {$this->table} p 
                 LEFT JOIN estoque e ON p.id = e.id_produto
+                  AND e.empresa_id = ?
             ";
-            $stmt = $this->db->query($sql);
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$_SESSION['empresa_id']]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return [];
@@ -52,11 +54,12 @@ class Produto extends BaseModel {
             $sql = "
                 SELECT p.*, e.quantidade 
                 FROM {$this->table} p 
-                INNER JOIN estoque e ON p.id = e.id_produto 
+                LEFT JOIN estoque e ON p.id = e.id_produto 
+                  AND e.empresa_id = ?
                 WHERE e.quantidade <= ?
             ";
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$limite]);
+            $stmt->execute([$_SESSION['empresa_id'], $limite]);
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return [];
@@ -125,18 +128,23 @@ class Produto extends BaseModel {
      * @return array
      */
     public function buscarParaPDV($termo, $tabela) {
-        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda, e.quantidade as estoque_disponivel
+        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda,
+                CASE 
+                    when p.categoria = 'Serviços' then 999
+                    else e.quantidade
+                end as estoque_disponivel
                 FROM produtos p
                 INNER JOIN itens_tabela_preco pr on pr.id_produto = p.id
                 LEFT JOIN estoque e ON p.id = e.id_produto
-                WHERE ((p.id = ?) OR (p.nome LIKE ?)) 
+                    and e.empresa_id = ?
+                WHERE ((p.categoria = ?) OR (p.nome LIKE ?)) 
                 AND     id_tabela = ?
-               
+
                 ORDER BY p.nome
                 LIMIT 20";
         try {
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([(int)$termo,'%'.$termo.'%', $tabela]);
+            $stmt->execute([$_SESSION['empresa_id'], '%'.$termo.'%','%'.$termo.'%', $tabela]);
             
             return $stmt->fetchAll();
         } catch (Exception $e) {
@@ -151,16 +159,21 @@ class Produto extends BaseModel {
      * @return array
      */
     public function buscarParaPDVById($termo, $tabela) {
-        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda, e.quantidade as estoque_disponivel
+        $sql = "SELECT p.id, p.nome, pr.valor_revenda as preco_venda, 
+            CASE 
+             when p.categoria = 'Serviços' then 999
+             else e.quantidade
+            end as estoque_disponivel
                 FROM produtos p
                 INNER JOIN itens_tabela_preco pr on pr.id_produto = p.id
                 LEFT JOIN estoque e ON p.id = e.id_produto
+                  AND e.empresa_id = ?
                 WHERE p.id = ? 
                 AND     id_tabela = ?
                 ";
         try {
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([(int)$termo, $tabela]);
+            $stmt->execute([$_SESSION['empresa_id'], (int)$termo, $tabela]);
             
             return $stmt->fetchAll();
         } catch (Exception $e) {
@@ -174,7 +187,7 @@ class Produto extends BaseModel {
      * @param string $pagina
      * @return json
      */
-    public function buscaProdutosPaginacao($termo, $pagina = 1){
+    public function buscaProdutosPaginacao($termo, $pagina = 1, $ocultaSrvico=0){
         try{
         $limite = 20;
         $pagina = max(1, (int)$pagina);
@@ -183,7 +196,8 @@ class Produto extends BaseModel {
 
         $sql = "SELECT id, nome, categoria, preco_venda 
         FROM produtos 
-        WHERE nome LIKE :termo OR categoria LIKE :termo2
+        WHERE (nome LIKE :termo OR categoria LIKE :termo2)
+         AND ((categoria <> 'Serviços' AND :cat1 = 1) OR (:cat2 = 0))
         ORDER BY nome
         LIMIT $limite OFFSET $offset";
 
@@ -193,6 +207,8 @@ class Produto extends BaseModel {
         $termoBusca = '%' . $termo . '%';
         $stmt->bindParam(':termo', $termoBusca);
         $stmt->bindParam(':termo2', $termoBusca);
+        $stmt->bindParam(':cat1', $ocultaSrvico);
+        $stmt->bindParam(':cat2', $ocultaSrvico);
         $stmt->execute();
 
         $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
