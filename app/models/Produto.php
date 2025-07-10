@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class Produto extends BaseModel {
     protected $table = 'produtos';
@@ -182,10 +182,47 @@ class Produto extends BaseModel {
     }
 
     /**
-     * Buscar produtos para PDV (por código ou descrição)
+     * Buscar produtos (por código)
+     * @param int $id
+     * @return array
+     */
+    public function buscaProdutoId($id){
+        try{
+        $sql = "SELECT p.*, e.quantidade
+        FROM produtos p
+        LEFT JOIN estoque e on e.id_produto = p.id 
+            AND e.empresa_id = :empresaid
+        WHERE p.id = :idproduto    
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':empresaid' => $_SESSION['empresa_id'],
+            ':idproduto' => $id
+        ]);
+
+        $produto = $stmt->fetchAll();
+
+        $response = [
+            'success' => true,
+            'produto' => $produto[0]
+        ];
+
+        return $response;
+        } catch (Exception $e) {
+            
+            gravarLog("Erro: " . $e->getMessage());
+            return false;
+        }
+        
+    }
+
+    /**
+     * Buscar produtos (por código ou descrição)
      * @param string $termo
      * @param string $pagina
-     * @return json
+     * @return array
      */
     public function buscaProdutosPaginacao($termo, $pagina = 1, $ocultaSrvico=0){
         try{
@@ -194,11 +231,13 @@ class Produto extends BaseModel {
         $offset = ($pagina- 1) * $limite;
         
 
-        $sql = "SELECT id, nome, categoria, preco_venda 
-        FROM produtos 
-        WHERE (nome LIKE :termo OR categoria LIKE :termo2)
-         AND ((categoria <> 'Serviços' AND :cat1 = 1) OR (:cat2 = 0))
-        ORDER BY nome
+        $sql = "SELECT p.*, e.quantidade as quantidade 
+        FROM produtos p
+        LEFT JOIN estoque e on e.id_produto = p.id
+            AND e.empresa_id = :empresaid 
+        WHERE (p.nome LIKE :termo OR p.categoria LIKE :termo2)
+         AND ((p.categoria <> 'Serviços' AND :cat1 = 1) OR (:cat2 = 0))
+        ORDER BY p.nome
         LIMIT $limite OFFSET $offset";
 
         
@@ -209,22 +248,15 @@ class Produto extends BaseModel {
         $stmt->bindParam(':termo2', $termoBusca);
         $stmt->bindParam(':cat1', $ocultaSrvico);
         $stmt->bindParam(':cat2', $ocultaSrvico);
+        $stmt->bindParam(':empresaid', $_SESSION['empresa_id']);
         $stmt->execute();
-
+        $numLinhas = $stmt->rowCount();    
         $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Conta o total
-        $sqlCount = "SELECT COUNT(*) as total FROM produtos WHERE nome LIKE :termo OR categoria LIKE :termo2";
-        $stmtCount = $this->db->prepare($sqlCount);
-        $stmtCount->bindParam(':termo', $termoBusca);
-        $stmtCount->bindParam(':termo2', $termoBusca);
-        $stmtCount->execute();
-        $total = $stmtCount->fetchColumn();
 
         // Formata a resposta
         $response = [
             'produtos' => [],
-            'total_count' => $total
+            'total_count' => $numLinhas
         ];
 
         foreach ($produtos as $produto) {
@@ -232,7 +264,8 @@ class Produto extends BaseModel {
                 'id' => $produto['id'] ?? '',
                 'text' => $produto['nome'] . ' (' . $produto['categoria'] . ')' ?? '',
                 'data-preco' => $produto['preco_venda'] ?? 0,
-                'data_preco' => $produto['preco_venda'] ?? 0
+                'unidade' => $produto['unidade_medida'] ?? 'UN',
+                'estoque_atual' => $produto['quantidade'] ?? 0
             ];
         }
 

@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class Estoque extends BaseModel {
     protected $table = 'estoque';

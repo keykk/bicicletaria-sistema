@@ -82,9 +82,6 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/estoque">Relatório de Estoque</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/estoque/entrada">Entrada</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/estoque/saida">Saída</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/estoque/ajuste">Ajuste</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

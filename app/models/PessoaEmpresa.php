@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class PessoaEmpresa extends BaseModel {
     protected $table = 'pessoa_empresa';

@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class TabelaPreco extends BaseModel {
     protected $table = 'tabelas_preco';

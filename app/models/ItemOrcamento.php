@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class ItemOrcamento extends BaseModel {
     protected $table = 'itens_orcamento';

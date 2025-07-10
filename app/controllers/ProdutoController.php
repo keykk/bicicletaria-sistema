@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseController.php';
+//require_once 'BaseController.php';
 
 class ProdutoController extends BaseController {
     private $produtoModel;
@@ -215,6 +215,14 @@ class ProdutoController extends BaseController {
         
         $produtos = $this->produtoModel->buscaProdutosPaginacao($termo,$pagina,$ocultaCategoria);
         $this->json($produtos);
+    }
+
+    public function api3($id){
+        $this->requireLogin();
+
+        $prod = $this->produtoModel->buscaProdutoId($id);
+
+        $this->json($prod);
     }
 }
 

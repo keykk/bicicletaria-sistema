@@ -4,37 +4,10 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseModel.php';
+//require_once 'BaseModel.php';
 
 class Servico extends BaseModel {
     protected $table = 'servicos';
-    
-    /**
-     * Buscar todos os serviços
-     */
-    public function findAll() {
-        try {
-            $sql = "SELECT * FROM {$this->table} ORDER BY data_entrada DESC";
-            $stmt = $this->db->query($sql);
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            return [];
-        }
-    }
-    
-    /**
-     * Buscar serviço por ID
-     */
-    public function findById($id) {
-        try {
-            $sql = "SELECT * FROM {$this->table} WHERE id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$id]);
-            return $stmt->fetch();
-        } catch (Exception $e) {
-            return false;
-        }
-    }
     
     /**
      * Criar novo serviço

@@ -1,0 +1,7 @@
+[00:26:51] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.categoria' in 'where clause'
+[00:26:52] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.categoria' in 'where clause'
+[00:26:56] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.categoria' in 'where clause'
+[00:26:56] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.categoria' in 'where clause'
+[00:26:57] Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'p.categoria' in 'where clause'
+[00:27:40] Erro: SQLSTATE[HY093]: Invalid parameter number
+[00:27:41] Erro: SQLSTATE[HY093]: Invalid parameter number

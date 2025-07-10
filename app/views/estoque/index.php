@@ -5,20 +5,6 @@
                 <i class="bi bi-boxes"></i>
                 Controle de Estoque
             </h1>
-            <div class="btn-group" role="group">
-                <a href="<?php echo BASE_URL; ?>/estoque/entrada" class="btn btn-success">
-                    <i class="bi bi-arrow-down-circle"></i>
-                    Entrada
-                </a>
-                <a href="<?php echo BASE_URL; ?>/estoque/saida" class="btn btn-warning">
-                    <i class="bi bi-arrow-up-circle"></i>
-                    Saída
-                </a>
-                <a href="<?php echo BASE_URL; ?>/estoque/ajuste" class="btn btn-info">
-                    <i class="bi bi-gear"></i>
-                    Ajuste
-                </a>
-            </div>
         </div>
     </div>
 </div>
@@ -161,20 +147,9 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="<?php echo BASE_URL; ?>/estoque/entrada" class="btn btn-outline-success" 
-                                                   data-bs-toggle="tooltip" title="Entrada">
-                                                    <i class="bi bi-arrow-down-circle"></i>
-                                                </a>
-                                                <?php if ($quantidade > 0): ?>
-                                                    <a href="<?php echo BASE_URL; ?>/estoque/saida" class="btn btn-outline-warning" 
-                                                       data-bs-toggle="tooltip" title="Saída">
-                                                        <i class="bi bi-arrow-up-circle"></i>
-                                                    </a>
-                                                <?php endif; ?>
-                                                <a href="<?php echo BASE_URL; ?>/estoque/ajuste" class="btn btn-outline-info" 
-                                                   data-bs-toggle="tooltip" title="Ajustar">
+                                                <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajuste_estoque" title="Ajustar" data-id="<?=$item['id']?>">
                                                     <i class="bi bi-gear"></i>
-                                                </a>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -241,3 +216,242 @@
     </div>
 </div>
 
+<div class="modal fade" id="ajuste_estoque" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-gear"></i>
+                    <span id="modal_titulo">Ajuste de Estoque</span>
+                </h6>
+        
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        <form id="form-ajuste">
+            <div class="modal-body">
+                
+                    <div class="row mb-3">
+                        
+                        <div class="col-md-6">
+                            <label for="tipo-ajuste" class="form-label">Tipo de Ajuste *</label>
+                            <select class="form-select" id="tipo-ajuste" name="tipo_ajuste" required onchange="alterarTipoAjuste()">
+                                <option value="">Selecione...</option>
+                                <option value="entrada">Entrada (+)</option>
+                                <option value="saida">Saída (-)</option>
+                                <option value="correcao">Correção (Definir Quantidade)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="quantidade-ajuste" class="form-label">Quantidade *</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="quantidade-ajuste" 
+                                       name="quantidade" step="0.001" min="0" required onchange="calcularNovoEstoque()">
+                                <span class="input-group-text" id="unidade-ajuste">UN</span>
+                            </div>
+                            <div class="form-text" id="help-quantidade"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="estoque-atual" class="form-label">Estoque Atual</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="estoque-atual" readonly>
+                                <span class="input-group-text" id="unidade-produto">UN</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="novo-estoque" class="form-label">Novo Estoque</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control bg-light" id="novo-estoque" readonly>
+                                <span class="input-group-text" id="unidade-novo">UN</span>
+                            </div>
+                        </div>
+                    </div>
+
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" onclick="limparFormulario()">
+                    <i class="bi bi-x"></i>
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i>
+                    Confirmar Ajuste
+                </button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<script>
+let produtoSelecionado = null;
+const modal = document.getElementById('ajuste_estoque');
+modal.addEventListener('show.bs.modal', function (event) {
+    
+  const button = event.relatedTarget;
+  const codigo = button.getAttribute('data-id').trim();
+  
+  fetch(`<?=BASE_URL?>/produto/api3/${encodeURIComponent(codigo)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.produto) {
+                const produto = data.produto;
+                selecionarProduto(produto.id, produto.nome, produto.id, produto.quantidade || 0, produto.unidade_medida || 'UN');
+            } else {
+                alert(data.message || 'Produto não encontrado');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao buscar produto');
+        });
+
+});
+
+function selecionarProduto(id, nome, codigo, estoqueAtual, unidade) {
+    produtoSelecionado = {
+        id: id,
+        nome: nome,
+        codigo: codigo,
+        estoque_atual: estoqueAtual,
+        unidade: unidade
+    };
+    
+    document.getElementById('estoque-atual').value = estoqueAtual;
+    
+    // Atualizar unidades
+    document.getElementById('unidade-produto').textContent = unidade;
+    document.getElementById('unidade-ajuste').textContent = unidade;
+    document.getElementById('unidade-novo').textContent = unidade;
+    document.getElementById('modal_titulo').textContent = nome;
+    
+    // Focar no tipo de ajuste
+    document.getElementById('tipo-ajuste').focus();
+}
+
+function alterarTipoAjuste() {
+    const tipo = document.getElementById('tipo-ajuste').value;
+    const helpText = document.getElementById('help-quantidade');
+    const quantidadeInput = document.getElementById('quantidade-ajuste');
+    
+    quantidadeInput.value = '';
+    document.getElementById('novo-estoque').value = '';
+    
+    switch(tipo) {
+        case 'entrada':
+            helpText.textContent = 'Quantidade a ser adicionada ao estoque';
+            quantidadeInput.placeholder = 'Ex: 10';
+            break;
+        case 'saida':
+            helpText.textContent = 'Quantidade a ser removida do estoque';
+            quantidadeInput.placeholder = 'Ex: 5';
+            break;
+        case 'correcao':
+            helpText.textContent = 'Quantidade correta que deve ficar no estoque';
+            quantidadeInput.placeholder = 'Ex: 25';
+            break;
+        default:
+            helpText.textContent = '';
+            quantidadeInput.placeholder = '';
+    }
+    
+    calcularNovoEstoque();
+}
+
+function calcularNovoEstoque() {
+    const tipo = document.getElementById('tipo-ajuste').value;
+    const quantidade = parseFloat(document.getElementById('quantidade-ajuste').value) || 0;
+    const estoqueAtual = parseFloat(document.getElementById('estoque-atual').value) || 0;
+    
+    let novoEstoque = estoqueAtual;
+    
+    switch(tipo) {
+        case 'entrada':
+            novoEstoque = estoqueAtual + quantidade;
+            break;
+        case 'saida':
+            novoEstoque = estoqueAtual - quantidade;
+            break;
+        case 'correcao':
+            novoEstoque = quantidade;
+            break;
+    }
+    
+    document.getElementById('novo-estoque').value = novoEstoque.toFixed(3);
+    
+}
+
+function limparFormulario() {
+    produtoSelecionado = null;
+    document.getElementById('form-ajuste').reset();
+    document.getElementById('tipo-ajuste').focus();
+    bootstrap.Modal.getInstance(modal).hide();
+}
+
+
+// Submeter formulário
+document.getElementById('form-ajuste').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!produtoSelecionado) {
+        alert('Selecione um produto');
+        return;
+    }
+    
+    const formData = new FormData(this);
+    const dados = Object.fromEntries(formData);
+    
+    dados.produto_id = produtoSelecionado.id;
+
+    // Validações
+    if (!dados.tipo_ajuste || !dados.quantidade) {
+        alert('Preencha todos os campos obrigatórios');
+        return;
+    }
+    
+    const quantidade = parseFloat(dados.quantidade);
+    if (quantidade <= 0) {
+        alert('Quantidade deve ser maior que zero');
+        return;
+    }
+    
+    if (dados.tipo_ajuste === 'saida' && quantidade > produtoSelecionado.estoque_atual) {
+        if (!confirm('A quantidade de saída é maior que o estoque atual. Deseja continuar?')) {
+            return;
+        }
+    }
+    
+    // Enviar dados
+    const btnSubmit = this.querySelector('button[type="submit"]');
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
+    
+    fetch('<?=BASE_URL?>/estoque/ajustar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Ajuste realizado com sucesso!');
+            limparFormulario();
+        } else {
+            alert('Erro: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao processar ajuste');
+    })
+    .finally(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<i class="bi bi-check-circle"></i> Confirmar Ajuste';
+    });
+});
+</script>

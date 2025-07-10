@@ -4,7 +4,7 @@
  * Sistema de Gestão de Bicicletaria
  */
 
-require_once 'BaseController.php';
+//require_once 'BaseController.php';
 
 class EstoqueController extends BaseController {
     private $estoqueModel;
@@ -108,45 +108,6 @@ class EstoqueController extends BaseController {
     }
     
     /**
-     * Processa saída de estoque
-     */
-    public function processarSaida() {
-        $this->requireLogin();
-        
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/estoque/saida');
-        }
-        
-        $idProduto = $_POST['id_produto'] ?? '';
-        $quantidade = $_POST['quantidade'] ?? '';
-        
-        if (empty($idProduto) || empty($quantidade) || !is_numeric($quantidade) || $quantidade <= 0) {
-            $_SESSION['errors'] = ['Produto e quantidade são obrigatórios'];
-            $this->redirect('/estoque/saida');
-        }
-        
-        $produto = $this->produtoModel->findById($idProduto);
-        if (!$produto) {
-            $_SESSION['errors'] = ['Produto não encontrado'];
-            $this->redirect('/estoque/saida');
-        }
-        
-        // Verificar se há quantidade suficiente
-        if (!$this->estoqueModel->temQuantidadeSuficiente($idProduto, $quantidade)) {
-            $_SESSION['errors'] = ['Quantidade insuficiente em estoque'];
-            $this->redirect('/estoque/saida');
-        }
-        
-        if ($this->estoqueModel->removerQuantidade($idProduto, $quantidade)) {
-            $_SESSION['success'] = "Saída de {$quantidade} {$produto['unidade_medida']} do produto '{$produto['nome']}' realizada com sucesso";
-        } else {
-            $_SESSION['errors'] = ['Erro ao processar saída de estoque'];
-        }
-        
-        $this->redirect('/estoque/saida');
-    }
-    
-    /**
      * Exibe formulário para ajuste de estoque
      */
     public function ajuste() {
@@ -166,38 +127,6 @@ class EstoqueController extends BaseController {
         $this->loadView('estoque/ajuste', $data);
     }
     
-    /**
-     * Processa ajuste de estoque
-     */
-    public function processarAjuste() {
-        $this->requireLogin();
-        
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/estoque/ajuste');
-        }
-        
-        $idProduto = $_POST['id_produto'] ?? '';
-        $novaQuantidade = $_POST['nova_quantidade'] ?? '';
-        
-        if (empty($idProduto) || !is_numeric($novaQuantidade) || $novaQuantidade < 0) {
-            $_SESSION['errors'] = ['Produto e nova quantidade são obrigatórios'];
-            $this->redirect('/estoque/ajuste');
-        }
-        
-        $produto = $this->produtoModel->findById($idProduto);
-        if (!$produto) {
-            $_SESSION['errors'] = ['Produto não encontrado'];
-            $this->redirect('/estoque/ajuste');
-        }
-        
-        if ($this->estoqueModel->updateQuantidade($idProduto, $novaQuantidade)) {
-            $_SESSION['success'] = "Estoque do produto '{$produto['nome']}' ajustado para {$novaQuantidade} {$produto['unidade_medida']}";
-        } else {
-            $_SESSION['errors'] = ['Erro ao processar ajuste de estoque'];
-        }
-        
-        $this->redirect('/estoque/ajuste');
-    }
     
     /**
      * API para obter quantidade em estoque
@@ -209,6 +138,92 @@ class EstoqueController extends BaseController {
         $quantidade = $estoque ? $estoque['quantidade'] : 0;
         
         $this->json(['quantidade' => $quantidade]);
+    }
+
+    /**
+     * Processar ajuste de estoque (AJAX)
+     */
+    public function ajustar() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->json(['success' => false, 'message' => 'Método não permitido']);
+            return;
+        }
+        
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Validar dados
+        if (empty($input['produto_id']) || empty($input['tipo_ajuste']) || 
+            !isset($input['quantidade']) ) {
+            $this->json(['success' => false, 'message' => 'Dados incompletos']);
+            return;
+        }
+        
+        $produto_id = $input['produto_id'];
+        $tipo_ajuste = $input['tipo_ajuste'];
+        $quantidade = floatval($input['quantidade']);
+        
+        
+        if ($quantidade <= 0) {
+            $this->json(['success' => false, 'message' => 'Quantidade deve ser maior que zero']);
+            return;
+        }
+        
+        try {
+            $this->db->beginTransaction();
+            
+            // Buscar produto e estoque atual
+            $produto = new Produto();
+            $produtoData = $produto->findById($produto_id);
+            
+            if (!$produtoData) {
+                throw new Exception('Produto não encontrado');
+            }
+            
+            $estoque = new Estoque();
+            $estoqueData = $estoque->findById($produto_id, $_SESSION['empresa_id']);
+            $estoque_anterior = $estoqueData['quantidade'] ?? 0;
+            
+            // Calcular novo estoque
+            $novo_estoque = $estoque_anterior;
+            
+            switch ($tipo_ajuste) {
+                case 'entrada':
+                    $novo_estoque = $estoque_anterior + $quantidade;
+                    break;
+                case 'saida':
+                    $novo_estoque = $estoque_anterior - $quantidade;
+                    break;
+                case 'correcao':
+                    $novo_estoque = $quantidade;
+                    break;
+                default:
+                    throw new Exception('Tipo de ajuste inválido');
+            }
+            
+            if ($novo_estoque < 0) {
+                throw new Exception('Estoque não pode ficar negativo');
+            }
+            
+            // Atualizar estoque
+            $success = $estoque->updateQuantidade($produto_id, $novo_estoque);
+            
+            if (!$success) {
+                throw new Exception('Erro ao atualizar estoque');
+            }
+            
+            $this->db->commit();
+            
+            $this->json([
+                'success' => true,
+                'message' => 'Ajuste realizado com sucesso',
+                'estoque_anterior' => $estoque_anterior,
+                'estoque_atual' => $novo_estoque
+            ]);
+            
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            $this->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 }
 
